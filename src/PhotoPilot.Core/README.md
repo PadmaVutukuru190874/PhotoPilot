@@ -1,0 +1,2 @@
+# PhotoPilot.Core
+Placeholder project.

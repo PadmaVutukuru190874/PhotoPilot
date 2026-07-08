@@ -1,0 +1,12 @@
+<Solution>
+  <Project Path="src/PhotoPilot.App/PhotoPilot.App.csproj" />
+  <Project Path="src/PhotoPilot.Contracts/PhotoPilot.Contracts.csproj" />
+  <Project Path="src/PhotoPilot.Core/PhotoPilot.Core.csproj" />
+  <Project Path="src/PhotoPilot.Imaging/PhotoPilot.Imaging.csproj" />
+  <Project Path="src/PhotoPilot.Infrastructure/PhotoPilot.Infrastructure.csproj" />
+  <Project Path="src/PhotoPilot.Metadata/PhotoPilot.Metadata.csproj" />
+  <Project Path="src/PhotoPilot.Scanner/PhotoPilot.Scanner.csproj" />
+  <Project Path="src/PhotoPilot.Shared/PhotoPilot.Shared.csproj" />
+  <Project Path="tests/PhotoPilot.IntegrationTests/PhotoPilot.IntegrationTests.csproj" />
+  <Project Path="tests/PhotoPilot.UnitTests/PhotoPilot.UnitTests.csproj" />
+</Solution>

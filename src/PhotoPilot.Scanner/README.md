@@ -1,0 +1,2 @@
+# PhotoPilot.Scanner
+Placeholder project.

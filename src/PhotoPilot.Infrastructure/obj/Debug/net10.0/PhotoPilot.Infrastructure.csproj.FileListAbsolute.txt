@@ -1,0 +1,12 @@
+C:\Padma\Projects\AI Tools\PhotoPilot\PhotoPilot\src\PhotoPilot.Infrastructure\bin\Debug\net10.0\PhotoPilot.Infrastructure.deps.json
+C:\Padma\Projects\AI Tools\PhotoPilot\PhotoPilot\src\PhotoPilot.Infrastructure\bin\Debug\net10.0\PhotoPilot.Infrastructure.dll
+C:\Padma\Projects\AI Tools\PhotoPilot\PhotoPilot\src\PhotoPilot.Infrastructure\bin\Debug\net10.0\PhotoPilot.Infrastructure.pdb
+C:\Padma\Projects\AI Tools\PhotoPilot\PhotoPilot\src\PhotoPilot.Infrastructure\obj\Debug\net10.0\PhotoPilot.Infrastructure.GeneratedMSBuildEditorConfig.editorconfig
+C:\Padma\Projects\AI Tools\PhotoPilot\PhotoPilot\src\PhotoPilot.Infrastructure\obj\Debug\net10.0\PhotoPilot.Infrastructure.AssemblyInfoInputs.cache
+C:\Padma\Projects\AI Tools\PhotoPilot\PhotoPilot\src\PhotoPilot.Infrastructure\obj\Debug\net10.0\PhotoPilot.Infrastructure.AssemblyInfo.cs
+C:\Padma\Projects\AI Tools\PhotoPilot\PhotoPilot\src\PhotoPilot.Infrastructure\obj\Debug\net10.0\PhotoPilot.Infrastructure.csproj.CoreCompileInputs.cache
+C:\Padma\Projects\AI Tools\PhotoPilot\PhotoPilot\src\PhotoPilot.Infrastructure\obj\Debug\net10.0\PhotoPilot.Infrastructure.sourcelink.json
+C:\Padma\Projects\AI Tools\PhotoPilot\PhotoPilot\src\PhotoPilot.Infrastructure\obj\Debug\net10.0\PhotoPilot.Infrastructure.dll
+C:\Padma\Projects\AI Tools\PhotoPilot\PhotoPilot\src\PhotoPilot.Infrastructure\obj\Debug\net10.0\refint\PhotoPilot.Infrastructure.dll
+C:\Padma\Projects\AI Tools\PhotoPilot\PhotoPilot\src\PhotoPilot.Infrastructure\obj\Debug\net10.0\PhotoPilot.Infrastructure.pdb
+C:\Padma\Projects\AI Tools\PhotoPilot\PhotoPilot\src\PhotoPilot.Infrastructure\obj\Debug\net10.0\ref\PhotoPilot.Infrastructure.dll
