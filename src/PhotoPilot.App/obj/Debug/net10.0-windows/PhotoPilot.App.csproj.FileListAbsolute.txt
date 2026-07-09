@@ -1,5 +1,3 @@
-C:\Padma\Projects\AI Tools\PhotoPilot\PhotoPilot\src\PhotoPilot.App\obj\Debug\net10.0-windows\App.g.cs
-C:\Padma\Projects\AI Tools\PhotoPilot\PhotoPilot\src\PhotoPilot.App\obj\Debug\net10.0-windows\PhotoPilot.App_MarkupCompile.cache
 C:\Padma\Projects\AI Tools\PhotoPilot\PhotoPilot\src\PhotoPilot.App\bin\Debug\net10.0-windows\PhotoPilot.App.exe
 C:\Padma\Projects\AI Tools\PhotoPilot\PhotoPilot\src\PhotoPilot.App\bin\Debug\net10.0-windows\PhotoPilot.App.deps.json
 C:\Padma\Projects\AI Tools\PhotoPilot\PhotoPilot\src\PhotoPilot.App\bin\Debug\net10.0-windows\PhotoPilot.App.runtimeconfig.json
@@ -7,6 +5,8 @@ C:\Padma\Projects\AI Tools\PhotoPilot\PhotoPilot\src\PhotoPilot.App\bin\Debug\ne
 C:\Padma\Projects\AI Tools\PhotoPilot\PhotoPilot\src\PhotoPilot.App\bin\Debug\net10.0-windows\PhotoPilot.App.pdb
 C:\Padma\Projects\AI Tools\PhotoPilot\PhotoPilot\src\PhotoPilot.App\obj\Debug\net10.0-windows\Views\MainWindow.baml
 C:\Padma\Projects\AI Tools\PhotoPilot\PhotoPilot\src\PhotoPilot.App\obj\Debug\net10.0-windows\Views\MainWindow.g.cs
+C:\Padma\Projects\AI Tools\PhotoPilot\PhotoPilot\src\PhotoPilot.App\obj\Debug\net10.0-windows\App.g.cs
+C:\Padma\Projects\AI Tools\PhotoPilot\PhotoPilot\src\PhotoPilot.App\obj\Debug\net10.0-windows\PhotoPilot.App_MarkupCompile.cache
 C:\Padma\Projects\AI Tools\PhotoPilot\PhotoPilot\src\PhotoPilot.App\obj\Debug\net10.0-windows\PhotoPilot.App.g.resources
 C:\Padma\Projects\AI Tools\PhotoPilot\PhotoPilot\src\PhotoPilot.App\obj\Debug\net10.0-windows\PhotoPilot.App.GeneratedMSBuildEditorConfig.editorconfig
 C:\Padma\Projects\AI Tools\PhotoPilot\PhotoPilot\src\PhotoPilot.App\obj\Debug\net10.0-windows\PhotoPilot.App.AssemblyInfoInputs.cache

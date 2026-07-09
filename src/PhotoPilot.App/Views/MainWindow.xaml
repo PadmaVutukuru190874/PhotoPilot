@@ -23,17 +23,24 @@
         <StackPanel Grid.Row="1"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
-                    Width="520">
+                    Width="620">
 
             <TextBlock Text="Welcome to PhotoPilot"
                        FontSize="30"
                        FontWeight="SemiBold"
                        HorizontalAlignment="Center"/>
 
-            <TextBlock Margin="0,10,0,25"
+            <TextBlock Margin="0,10,0,16"
                        Text="Organize memories intelligently."
                        FontSize="16"
                        HorizontalAlignment="Center"/>
+
+            <TextBlock Margin="0,0,0,20"
+                       Text="Expected media files: JPG, JPEG, PNG, BMP, GIF, TIFF, WEBP, HEIC, MP4, MOV, AVI, MKV, WMV"
+                       FontSize="13"
+                       Foreground="#666666"
+                       TextAlignment="Center"
+                       TextWrapping="Wrap"/>
 
             <Button Width="220"
                     Height="45"
@@ -54,7 +61,13 @@
                                Margin="0,6,0,0"
                                FontSize="14"
                                TextWrapping="Wrap"
-                               Text="No folder selected"/>
+                               Text="No valid folder selected"/>
+
+                    <TextBlock x:Name="MediaCountText"
+                               Margin="0,10,0,0"
+                               FontSize="13"
+                               Foreground="#666666"
+                               Text="Media files found: 0"/>
                 </StackPanel>
             </Border>
         </StackPanel>
