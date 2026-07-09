@@ -9,7 +9,7 @@ public partial class App : Application
     {
         base.OnStartup(e);
 
-        MainWindow window = new();
-        window.Show();
+        var mainWindow = new MainWindow();
+        mainWindow.Show();
     }
 }

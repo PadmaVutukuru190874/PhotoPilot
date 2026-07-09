@@ -4,7 +4,10 @@
         Title="PhotoPilot"
         Width="1200"
         Height="750"
+        MinWidth="900"
+        MinHeight="600"
         WindowStartupLocation="CenterScreen">
+
     <Grid Margin="30">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -12,13 +15,16 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <TextBlock Text="📸 PhotoPilot"
+        <TextBlock Grid.Row="0"
+                   Text="📸 PhotoPilot"
                    FontSize="28"
                    FontWeight="Bold"/>
 
         <StackPanel Grid.Row="1"
                     HorizontalAlignment="Center"
-                    VerticalAlignment="Center">
+                    VerticalAlignment="Center"
+                    Width="520">
+
             <TextBlock Text="Welcome to PhotoPilot"
                        FontSize="30"
                        FontWeight="SemiBold"
@@ -31,11 +37,31 @@
 
             <Button Width="220"
                     Height="45"
-                    Content="Select Photo Folder"/>
+                    Content="Select Photo Folder"
+                    Click="SelectPhotoFolder_Click"/>
+
+            <Border Margin="0,24,0,0"
+                    Padding="14"
+                    BorderBrush="#DDDDDD"
+                    BorderThickness="1"
+                    CornerRadius="8">
+                <StackPanel>
+                    <TextBlock Text="Selected folder"
+                               FontWeight="SemiBold"
+                               FontSize="13"/>
+
+                    <TextBlock x:Name="SelectedFolderText"
+                               Margin="0,6,0,0"
+                               FontSize="14"
+                               TextWrapping="Wrap"
+                               Text="No folder selected"/>
+                </StackPanel>
+            </Border>
         </StackPanel>
 
         <StatusBar Grid.Row="2">
-            <TextBlock Text="Ready"/>
+            <TextBlock x:Name="StatusText"
+                       Text="Ready"/>
         </StatusBar>
     </Grid>
 </Window>
