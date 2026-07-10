@@ -51,7 +51,6 @@ public partial class MainWindow : Window
             }
 
             string selectedFolder = dialog.FolderName;
-
             int mediaFileCount = CountSupportedMediaFiles(selectedFolder);
 
             if (mediaFileCount == 0)
@@ -62,7 +61,7 @@ public partial class MainWindow : Window
 
                 MessageBox.Show(
                     this,
-                    "The selected folder does not contain any supported photo or video files.\n\nSupported files:\nJPG, JPEG, PNG, BMP, GIF, TIFF, WEBP, HEIC, MP4, MOV, AVI, MKV, WMV",
+                    "The selected folder does not contain any supported photo or video files.",
                     "No Supported Media Found",
                     MessageBoxButton.OK,
                     MessageBoxImage.Warning);

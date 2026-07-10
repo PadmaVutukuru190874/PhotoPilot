@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("PhotoPilot.App")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b8402fd4a1b32f00952832da01b334876b7636db")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d8f0da39a5b185c1e2fc9a80d1583c82ee7749c5")]
 [assembly: System.Reflection.AssemblyProductAttribute("PhotoPilot.App")]
 [assembly: System.Reflection.AssemblyTitleAttribute("PhotoPilot.App")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
