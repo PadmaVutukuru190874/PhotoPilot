@@ -8,4 +8,8 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 	</PropertyGroup>
 
+	<ItemGroup>
+	  <ProjectReference Include="..\PhotoPilot.Scanner\PhotoPilot.Scanner.csproj" />
+	</ItemGroup>
+
 </Project>

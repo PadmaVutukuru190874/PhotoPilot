@@ -7,14 +7,30 @@
   "targets": {
     ".NETCoreApp,Version=v10.0": {
       "PhotoPilot.App/1.0.0": {
+        "dependencies": {
+          "PhotoPilot.Scanner": "1.0.0"
+        },
         "runtime": {
           "PhotoPilot.App.dll": {}
+        }
+      },
+      "PhotoPilot.Scanner/1.0.0": {
+        "runtime": {
+          "PhotoPilot.Scanner.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
         }
       }
     }
   },
   "libraries": {
     "PhotoPilot.App/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "PhotoPilot.Scanner/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

@@ -3,6 +3,9 @@ C:\Padma\Projects\AI Tools\PhotoPilot\PhotoPilot\src\PhotoPilot.App\bin\Debug\ne
 C:\Padma\Projects\AI Tools\PhotoPilot\PhotoPilot\src\PhotoPilot.App\bin\Debug\net10.0-windows\PhotoPilot.App.runtimeconfig.json
 C:\Padma\Projects\AI Tools\PhotoPilot\PhotoPilot\src\PhotoPilot.App\bin\Debug\net10.0-windows\PhotoPilot.App.dll
 C:\Padma\Projects\AI Tools\PhotoPilot\PhotoPilot\src\PhotoPilot.App\bin\Debug\net10.0-windows\PhotoPilot.App.pdb
+C:\Padma\Projects\AI Tools\PhotoPilot\PhotoPilot\src\PhotoPilot.App\bin\Debug\net10.0-windows\PhotoPilot.Scanner.dll
+C:\Padma\Projects\AI Tools\PhotoPilot\PhotoPilot\src\PhotoPilot.App\bin\Debug\net10.0-windows\PhotoPilot.Scanner.pdb
+C:\Padma\Projects\AI Tools\PhotoPilot\PhotoPilot\src\PhotoPilot.App\obj\Debug\net10.0-windows\PhotoPilot.App.csproj.AssemblyReference.cache
 C:\Padma\Projects\AI Tools\PhotoPilot\PhotoPilot\src\PhotoPilot.App\obj\Debug\net10.0-windows\Themes\AppTheme.baml
 C:\Padma\Projects\AI Tools\PhotoPilot\PhotoPilot\src\PhotoPilot.App\obj\Debug\net10.0-windows\Views\MainWindow.baml
 C:\Padma\Projects\AI Tools\PhotoPilot\PhotoPilot\src\PhotoPilot.App\obj\Debug\net10.0-windows\App.baml
@@ -15,6 +18,7 @@ C:\Padma\Projects\AI Tools\PhotoPilot\PhotoPilot\src\PhotoPilot.App\obj\Debug\ne
 C:\Padma\Projects\AI Tools\PhotoPilot\PhotoPilot\src\PhotoPilot.App\obj\Debug\net10.0-windows\PhotoPilot.App.AssemblyInfo.cs
 C:\Padma\Projects\AI Tools\PhotoPilot\PhotoPilot\src\PhotoPilot.App\obj\Debug\net10.0-windows\PhotoPilot.App.csproj.CoreCompileInputs.cache
 C:\Padma\Projects\AI Tools\PhotoPilot\PhotoPilot\src\PhotoPilot.App\obj\Debug\net10.0-windows\PhotoPilot.App.sourcelink.json
+C:\Padma\Projects\AI Tools\PhotoPilot\PhotoPilot\src\PhotoPilot.App\obj\Debug\net10.0-windows\PhotoPil.2448A494.Up2Date
 C:\Padma\Projects\AI Tools\PhotoPilot\PhotoPilot\src\PhotoPilot.App\obj\Debug\net10.0-windows\PhotoPilot.App.dll
 C:\Padma\Projects\AI Tools\PhotoPilot\PhotoPilot\src\PhotoPilot.App\obj\Debug\net10.0-windows\refint\PhotoPilot.App.dll
 C:\Padma\Projects\AI Tools\PhotoPilot\PhotoPilot\src\PhotoPilot.App\obj\Debug\net10.0-windows\PhotoPilot.App.pdb

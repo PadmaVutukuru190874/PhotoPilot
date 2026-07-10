@@ -1,11 +1,30 @@
 {
   "version": 4,
   "targets": {
-    "net10.0-windows": {}
+    "net10.0-windows": {
+      "PhotoPilot.Scanner/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v10.0",
+        "compile": {
+          "bin/placeholder/PhotoPilot.Scanner.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/PhotoPilot.Scanner.dll": {}
+        }
+      }
+    }
   },
-  "libraries": {},
+  "libraries": {
+    "PhotoPilot.Scanner/1.0.0": {
+      "type": "project",
+      "path": "../PhotoPilot.Scanner/PhotoPilot.Scanner.csproj",
+      "msbuildProject": "../PhotoPilot.Scanner/PhotoPilot.Scanner.csproj"
+    }
+  },
   "projectFileDependencyGroups": {
-    "net10.0-windows": []
+    "net10.0-windows": [
+      "PhotoPilot.Scanner >= 1.0.0"
+    ]
   },
   "packageFolders": {
     "C:\\Users\\rames\\.nuget\\packages\\": {},
@@ -40,7 +59,11 @@
         "net10.0-windows": {
           "framework": "net10.0-windows7.0",
           "targetAlias": "net10.0-windows",
-          "projectReferences": {}
+          "projectReferences": {
+            "C:\\Padma\\Projects\\AI Tools\\PhotoPilot\\PhotoPilot\\src\\PhotoPilot.Scanner\\PhotoPilot.Scanner.csproj": {
+              "projectPath": "C:\\Padma\\Projects\\AI Tools\\PhotoPilot\\PhotoPilot\\src\\PhotoPilot.Scanner\\PhotoPilot.Scanner.csproj"
+            }
+          }
         }
       },
       "warningProperties": {

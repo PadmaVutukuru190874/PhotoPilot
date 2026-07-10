@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("PhotoPilot.Scanner")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b5235e3734711815caa826ca7ae42dc2327ec25a")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+9b6fce9418dfe5673e81d59de5e788c530e8bdb3")]
 [assembly: System.Reflection.AssemblyProductAttribute("PhotoPilot.Scanner")]
 [assembly: System.Reflection.AssemblyTitleAttribute("PhotoPilot.Scanner")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
