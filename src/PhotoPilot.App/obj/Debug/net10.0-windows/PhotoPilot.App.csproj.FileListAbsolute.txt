@@ -3,8 +3,14 @@ C:\Padma\Projects\AI Tools\PhotoPilot\PhotoPilot\src\PhotoPilot.App\bin\Debug\ne
 C:\Padma\Projects\AI Tools\PhotoPilot\PhotoPilot\src\PhotoPilot.App\bin\Debug\net10.0-windows\PhotoPilot.App.runtimeconfig.json
 C:\Padma\Projects\AI Tools\PhotoPilot\PhotoPilot\src\PhotoPilot.App\bin\Debug\net10.0-windows\PhotoPilot.App.dll
 C:\Padma\Projects\AI Tools\PhotoPilot\PhotoPilot\src\PhotoPilot.App\bin\Debug\net10.0-windows\PhotoPilot.App.pdb
+C:\Padma\Projects\AI Tools\PhotoPilot\PhotoPilot\src\PhotoPilot.App\bin\Debug\net10.0-windows\MetadataExtractor.dll
+C:\Padma\Projects\AI Tools\PhotoPilot\PhotoPilot\src\PhotoPilot.App\bin\Debug\net10.0-windows\XmpCore.dll
+C:\Padma\Projects\AI Tools\PhotoPilot\PhotoPilot\src\PhotoPilot.App\bin\Debug\net10.0-windows\PhotoPilot.Core.dll
+C:\Padma\Projects\AI Tools\PhotoPilot\PhotoPilot\src\PhotoPilot.App\bin\Debug\net10.0-windows\PhotoPilot.Metadata.dll
 C:\Padma\Projects\AI Tools\PhotoPilot\PhotoPilot\src\PhotoPilot.App\bin\Debug\net10.0-windows\PhotoPilot.Scanner.dll
+C:\Padma\Projects\AI Tools\PhotoPilot\PhotoPilot\src\PhotoPilot.App\bin\Debug\net10.0-windows\PhotoPilot.Metadata.pdb
 C:\Padma\Projects\AI Tools\PhotoPilot\PhotoPilot\src\PhotoPilot.App\bin\Debug\net10.0-windows\PhotoPilot.Scanner.pdb
+C:\Padma\Projects\AI Tools\PhotoPilot\PhotoPilot\src\PhotoPilot.App\bin\Debug\net10.0-windows\PhotoPilot.Core.pdb
 C:\Padma\Projects\AI Tools\PhotoPilot\PhotoPilot\src\PhotoPilot.App\obj\Debug\net10.0-windows\PhotoPilot.App.csproj.AssemblyReference.cache
 C:\Padma\Projects\AI Tools\PhotoPilot\PhotoPilot\src\PhotoPilot.App\obj\Debug\net10.0-windows\Themes\AppTheme.baml
 C:\Padma\Projects\AI Tools\PhotoPilot\PhotoPilot\src\PhotoPilot.App\obj\Debug\net10.0-windows\Views\MainWindow.baml

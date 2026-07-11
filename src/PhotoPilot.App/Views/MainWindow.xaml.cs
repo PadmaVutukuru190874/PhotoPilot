@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 using System.Windows;
 using Microsoft.Win32;
 using PhotoPilot.Scanner;
+using PhotoPilot.Core;
+using PhotoPilot.Metadata;
+using PhotoPilot.App.Models;
 
 namespace PhotoPilot.App.Views;
 
@@ -32,6 +35,9 @@ public partial class MainWindow : Window
         };
 
     private readonly IMediaScanner _mediaScanner;
+    private readonly MediaCatalogMetadataEnricher _metadataEnricher;
+    private readonly MediaCatalog _mediaCatalog;
+
     private CancellationTokenSource? _scanCancellationTokenSource;
     private string? _selectedFolderPath;
 
@@ -40,6 +46,12 @@ public partial class MainWindow : Window
         InitializeComponent();
 
         _mediaScanner = new FileSystemMediaScanner();
+
+        _metadataEnricher =
+        new MediaCatalogMetadataEnricher(
+        new ImageMetadataExtractor());
+
+        _mediaCatalog = new MediaCatalog();
     }
 
     private void SelectPhotoFolder_Click(
@@ -111,8 +123,8 @@ public partial class MainWindow : Window
     }
 
     private async void StartScan_Click(
-        object sender,
-        RoutedEventArgs e)
+    object sender,
+    RoutedEventArgs e)
     {
         if (string.IsNullOrWhiteSpace(_selectedFolderPath))
         {
@@ -140,21 +152,35 @@ public partial class MainWindow : Window
             StatusText.Text = "Scanning media files...";
             ScanProgressBar.IsIndeterminate = true;
 
-            ScanSummary summary =
+            ScanResult result =
                 await _mediaScanner.ScanAsync(
                     _selectedFolderPath,
                     options,
                     progress,
                     _scanCancellationTokenSource.Token);
 
+            _mediaCatalog.Replace(result.MediaItems);
+
+            if (result.Summary.WasCancelled)
+            {
+                DisplayScanSummary(result.Summary);
+                return;
+            }
+
+            await EnrichCatalogMetadataAsync(
+                _scanCancellationTokenSource.Token);
+
+            PopulateMetadataPreview();
+
             ScanProgressBar.IsIndeterminate = false;
 
-            DisplayScanSummary(summary);
+            DisplayScanSummary(result.Summary);
         }
         catch (OperationCanceledException)
         {
             StatusText.Text = "Scan cancelled";
-            CurrentFileText.Text = "Scan cancelled";
+            CurrentFileText.Text =
+                "The operation was cancelled by the user.";
         }
         catch (UnauthorizedAccessException)
         {
@@ -200,6 +226,129 @@ public partial class MainWindow : Window
 
         CurrentFileText.Text =
             progress.CurrentFile ?? string.Empty;
+    }
+
+    private async Task EnrichCatalogMetadataAsync(
+    CancellationToken cancellationToken)
+    {
+        StatusText.Text = "Reading photo metadata...";
+        CurrentFileText.Text = "Preparing metadata extraction";
+        ScanProgressBar.IsIndeterminate = true;
+
+        var progress =
+            new Progress<MetadataEnrichmentProgress>(
+                metadataProgress =>
+                {
+                    StatusText.Text =
+                        $"Reading metadata: " +
+                        $"{metadataProgress.ProcessedPhotos} of " +
+                        $"{metadataProgress.TotalPhotos} photos";
+
+                    CurrentFileText.Text =
+                        metadataProgress.CurrentFile;
+                });
+
+        await _metadataEnricher.EnrichAsync(
+            _mediaCatalog,
+            progress,
+            cancellationToken);
+
+        IReadOnlyList<MediaItem> catalogItems =
+            _mediaCatalog.Items;
+
+        int metadataExtractedCount =
+            catalogItems.Count(
+                item =>
+                    item.ProcessingStatus ==
+                    MediaProcessingStatus.MetadataExtracted);
+
+        int metadataFailedCount =
+            catalogItems.Count(
+                item =>
+                    item.ProcessingStatus ==
+                    MediaProcessingStatus.ProcessingFailed);
+
+        StatusText.Text =
+            $"Metadata completed: " +
+            $"{metadataExtractedCount} successful, " +
+            $"{metadataFailedCount} with errors";
+
+        CurrentFileText.Text =
+            $"Catalog contains {_mediaCatalog.Count} media items";
+    }
+
+    private void PopulateMetadataPreview()
+    {
+        IReadOnlyList<MediaItem> catalogItems =
+            _mediaCatalog.Items;
+
+        MetadataPreviewRow[] previewRows =
+            catalogItems
+                .OrderBy(item => item.FileName)
+                .Take(100)
+                .Select(
+                    item =>
+                    {
+                        MediaMetadataInfo? metadata =
+                            item.Metadata;
+
+                        string camera =
+                            string.Join(
+                                " ",
+                                new[]
+                                {
+                                metadata?.CameraMake,
+                                metadata?.CameraModel
+                                }
+                                .Where(
+                                    value =>
+                                        !string.IsNullOrWhiteSpace(value)));
+
+                        if (string.IsNullOrWhiteSpace(camera))
+                        {
+                            camera = "Unknown";
+                        }
+
+                        string resolution =
+                            metadata?.Width is int width &&
+                            metadata?.Height is int height
+                                ? $"{width} × {height}"
+                                : "Unknown";
+
+                        return new MetadataPreviewRow
+                        {
+                            FileName = item.FileName,
+
+                            MediaType =
+                                item.Kind.ToString(),
+
+                            DateTaken =
+                                metadata?.DateTaken?
+                                    .ToString("yyyy-MM-dd HH:mm")
+                                ?? "Unknown",
+
+                            Camera = camera,
+
+                            Resolution = resolution,
+
+                            Gps =
+                                metadata?.HasGps == true
+                                    ? "Yes"
+                                    : "No",
+
+                            Status =
+                                item.ProcessingStatus.ToString()
+                        };
+                    })
+                .ToArray();
+
+        MetadataPreviewGrid.ItemsSource =
+            previewRows;
+
+        MetadataPreviewCountText.Text =
+            catalogItems.Count > previewRows.Length
+                ? $"Showing {previewRows.Length} of {catalogItems.Count}"
+                : $"{previewRows.Length} media item(s)";
     }
 
     private void DisplayScanSummary(
@@ -264,6 +413,8 @@ public partial class MainWindow : Window
         CurrentFileText.Text = "No scan running";
         ScanProgressBar.Value = 0;
         ScanProgressBar.IsIndeterminate = false;
+        MetadataPreviewGrid.ItemsSource = null;
+        MetadataPreviewCountText.Text = "No metadata loaded";
     }
 
     private static bool ContainsSupportedMedia(

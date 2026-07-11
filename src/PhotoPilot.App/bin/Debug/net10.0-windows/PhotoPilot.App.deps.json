@@ -8,13 +8,56 @@
     ".NETCoreApp,Version=v10.0": {
       "PhotoPilot.App/1.0.0": {
         "dependencies": {
+          "PhotoPilot.Metadata": "1.0.0",
           "PhotoPilot.Scanner": "1.0.0"
         },
         "runtime": {
           "PhotoPilot.App.dll": {}
         }
       },
+      "MetadataExtractor/2.9.3": {
+        "dependencies": {
+          "XmpCore": "6.1.10.1"
+        },
+        "runtime": {
+          "lib/net8.0/MetadataExtractor.dll": {
+            "assemblyVersion": "2.9.3.0",
+            "fileVersion": "2.9.3.0"
+          }
+        }
+      },
+      "XmpCore/6.1.10.1": {
+        "runtime": {
+          "lib/netstandard2.0/XmpCore.dll": {
+            "assemblyVersion": "6.1.10.1",
+            "fileVersion": "6.1.10.1"
+          }
+        }
+      },
+      "PhotoPilot.Core/1.0.0": {
+        "runtime": {
+          "PhotoPilot.Core.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "PhotoPilot.Metadata/1.0.0": {
+        "dependencies": {
+          "MetadataExtractor": "2.9.3",
+          "PhotoPilot.Core": "1.0.0"
+        },
+        "runtime": {
+          "PhotoPilot.Metadata.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
       "PhotoPilot.Scanner/1.0.0": {
+        "dependencies": {
+          "PhotoPilot.Core": "1.0.0"
+        },
         "runtime": {
           "PhotoPilot.Scanner.dll": {
             "assemblyVersion": "1.0.0.0",
@@ -26,6 +69,30 @@
   },
   "libraries": {
     "PhotoPilot.App/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "MetadataExtractor/2.9.3": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-7dBcqlPC2Zc/bsZtXnv8nCWe5h5WsLHszzHtxnpcsVy4MwlD3KQ3wVNoiYBm0a3rzt5hRwAosPvLPhlXrV5lyg==",
+      "path": "metadataextractor/2.9.3",
+      "hashPath": "metadataextractor.2.9.3.nupkg.sha512"
+    },
+    "XmpCore/6.1.10.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-/Tp2/e39e7z8hLtS4TXt0FNNZHbf5yNFfHS0/59soXlgOzZlyRZivvzWpvujyaWkTWWgecp/1nHxkuc5vntn7A==",
+      "path": "xmpcore/6.1.10.1",
+      "hashPath": "xmpcore.6.1.10.1.nupkg.sha512"
+    },
+    "PhotoPilot.Core/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "PhotoPilot.Metadata/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

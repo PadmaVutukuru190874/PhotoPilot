@@ -2,9 +2,65 @@
   "version": 4,
   "targets": {
     "net10.0-windows": {
+      "MetadataExtractor/2.9.3": {
+        "type": "package",
+        "dependencies": {
+          "XmpCore": "6.1.10.1"
+        },
+        "compile": {
+          "lib/net8.0/MetadataExtractor.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net8.0/MetadataExtractor.dll": {
+            "related": ".xml"
+          }
+        }
+      },
+      "XmpCore/6.1.10.1": {
+        "type": "package",
+        "compile": {
+          "lib/netstandard2.0/XmpCore.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/netstandard2.0/XmpCore.dll": {
+            "related": ".xml"
+          }
+        }
+      },
+      "PhotoPilot.Core/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v10.0",
+        "compile": {
+          "bin/placeholder/PhotoPilot.Core.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/PhotoPilot.Core.dll": {}
+        }
+      },
+      "PhotoPilot.Metadata/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v10.0",
+        "dependencies": {
+          "MetadataExtractor": "2.9.3",
+          "PhotoPilot.Core": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/PhotoPilot.Metadata.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/PhotoPilot.Metadata.dll": {}
+        }
+      },
       "PhotoPilot.Scanner/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v10.0",
+        "dependencies": {
+          "PhotoPilot.Core": "1.0.0"
+        },
         "compile": {
           "bin/placeholder/PhotoPilot.Scanner.dll": {}
         },
@@ -15,6 +71,52 @@
     }
   },
   "libraries": {
+    "MetadataExtractor/2.9.3": {
+      "sha512": "7dBcqlPC2Zc/bsZtXnv8nCWe5h5WsLHszzHtxnpcsVy4MwlD3KQ3wVNoiYBm0a3rzt5hRwAosPvLPhlXrV5lyg==",
+      "type": "package",
+      "path": "metadataextractor/2.9.3",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "README.md",
+        "lib/net8.0/MetadataExtractor.dll",
+        "lib/net8.0/MetadataExtractor.xml",
+        "lib/netstandard2.0/MetadataExtractor.dll",
+        "lib/netstandard2.0/MetadataExtractor.xml",
+        "lib/netstandard2.1/MetadataExtractor.dll",
+        "lib/netstandard2.1/MetadataExtractor.xml",
+        "metadata-extractor-logo-128.png",
+        "metadataextractor.2.9.3.nupkg.sha512",
+        "metadataextractor.nuspec"
+      ]
+    },
+    "XmpCore/6.1.10.1": {
+      "sha512": "/Tp2/e39e7z8hLtS4TXt0FNNZHbf5yNFfHS0/59soXlgOzZlyRZivvzWpvujyaWkTWWgecp/1nHxkuc5vntn7A==",
+      "type": "package",
+      "path": "xmpcore/6.1.10.1",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/net35/XmpCore.dll",
+        "lib/net35/XmpCore.xml",
+        "lib/netstandard1.0/XmpCore.dll",
+        "lib/netstandard1.0/XmpCore.xml",
+        "lib/netstandard2.0/XmpCore.dll",
+        "lib/netstandard2.0/XmpCore.xml",
+        "xmpcore.6.1.10.1.nupkg.sha512",
+        "xmpcore.nuspec"
+      ]
+    },
+    "PhotoPilot.Core/1.0.0": {
+      "type": "project",
+      "path": "../PhotoPilot.Core/PhotoPilot.Core.csproj",
+      "msbuildProject": "../PhotoPilot.Core/PhotoPilot.Core.csproj"
+    },
+    "PhotoPilot.Metadata/1.0.0": {
+      "type": "project",
+      "path": "../PhotoPilot.Metadata/PhotoPilot.Metadata.csproj",
+      "msbuildProject": "../PhotoPilot.Metadata/PhotoPilot.Metadata.csproj"
+    },
     "PhotoPilot.Scanner/1.0.0": {
       "type": "project",
       "path": "../PhotoPilot.Scanner/PhotoPilot.Scanner.csproj",
@@ -23,6 +125,7 @@
   },
   "projectFileDependencyGroups": {
     "net10.0-windows": [
+      "PhotoPilot.Metadata >= 1.0.0",
       "PhotoPilot.Scanner >= 1.0.0"
     ]
   },
@@ -60,6 +163,9 @@
           "framework": "net10.0-windows7.0",
           "targetAlias": "net10.0-windows",
           "projectReferences": {
+            "C:\\Padma\\Projects\\AI Tools\\PhotoPilot\\PhotoPilot\\src\\PhotoPilot.Metadata\\PhotoPilot.Metadata.csproj": {
+              "projectPath": "C:\\Padma\\Projects\\AI Tools\\PhotoPilot\\PhotoPilot\\src\\PhotoPilot.Metadata\\PhotoPilot.Metadata.csproj"
+            },
             "C:\\Padma\\Projects\\AI Tools\\PhotoPilot\\PhotoPilot\\src\\PhotoPilot.Scanner\\PhotoPilot.Scanner.csproj": {
               "projectPath": "C:\\Padma\\Projects\\AI Tools\\PhotoPilot\\PhotoPilot\\src\\PhotoPilot.Scanner\\PhotoPilot.Scanner.csproj"
             }

@@ -210,6 +210,72 @@
                                 </StackPanel>
                             </Border>
                         </Grid>
+                        <!-- Metadata preview -->
+                        <Border Margin="0,24,0,0"
+        Padding="16"
+        BorderBrush="{StaticResource AppBorderBrush}"
+        BorderThickness="1"
+        CornerRadius="10"
+        Background="{StaticResource CardBackgroundBrush}">
+
+                            <StackPanel>
+                                <DockPanel Margin="0,0,0,12">
+                                    <TextBlock DockPanel.Dock="Left"
+                       Text="Metadata Preview"
+                       FontSize="16"
+                       FontWeight="SemiBold"/>
+
+                                    <TextBlock x:Name="MetadataPreviewCountText"
+                       Text="No metadata loaded"
+                       FontSize="12"
+                       Foreground="{StaticResource TextSecondaryBrush}"
+                       VerticalAlignment="Center"
+                       HorizontalAlignment="Right"/>
+                                </DockPanel>
+
+                                <DataGrid x:Name="MetadataPreviewGrid"
+                  Height="260"
+                  AutoGenerateColumns="False"
+                  IsReadOnly="True"
+                  CanUserAddRows="False"
+                  CanUserDeleteRows="False"
+                  HeadersVisibility="Column"
+                  GridLinesVisibility="Horizontal"
+                  SelectionMode="Single"
+                  AlternatingRowBackground="#F8FAFC">
+
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn Header="File"
+                                    Binding="{Binding FileName}"
+                                    Width="2*"/>
+
+                                        <DataGridTextColumn Header="Type"
+                                    Binding="{Binding MediaType}"
+                                    Width="80"/>
+
+                                        <DataGridTextColumn Header="Date taken"
+                                    Binding="{Binding DateTaken}"
+                                    Width="130"/>
+
+                                        <DataGridTextColumn Header="Camera"
+                                    Binding="{Binding Camera}"
+                                    Width="150"/>
+
+                                        <DataGridTextColumn Header="Resolution"
+                                    Binding="{Binding Resolution}"
+                                    Width="105"/>
+
+                                        <DataGridTextColumn Header="GPS"
+                                    Binding="{Binding Gps}"
+                                    Width="65"/>
+
+                                        <DataGridTextColumn Header="Status"
+                                    Binding="{Binding Status}"
+                                    Width="120"/>
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </StackPanel>
+                        </Border>
                     </StackPanel>
                 </Border>
             </Grid>

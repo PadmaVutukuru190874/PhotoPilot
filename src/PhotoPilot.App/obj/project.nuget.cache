@@ -1,8 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "R3YXH997JWQ=",
+  "dgSpecHash": "Af0CGsL4j1k=",
   "success": true,
   "projectFilePath": "C:\\Padma\\Projects\\AI Tools\\PhotoPilot\\PhotoPilot\\src\\PhotoPilot.App\\PhotoPilot.App.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "C:\\Users\\rames\\.nuget\\packages\\metadataextractor\\2.9.3\\metadataextractor.2.9.3.nupkg.sha512",
+    "C:\\Users\\rames\\.nuget\\packages\\xmpcore\\6.1.10.1\\xmpcore.6.1.10.1.nupkg.sha512"
+  ],
   "logs": []
 }
