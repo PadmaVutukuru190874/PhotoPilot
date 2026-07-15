@@ -8,6 +8,7 @@
     ".NETCoreApp,Version=v10.0": {
       "PhotoPilot.App/1.0.0": {
         "dependencies": {
+          "PhotoPilot.Imaging": "1.0.0",
           "PhotoPilot.Metadata": "1.0.0",
           "PhotoPilot.Scanner": "1.0.0"
         },
@@ -37,6 +38,14 @@
       "PhotoPilot.Core/1.0.0": {
         "runtime": {
           "PhotoPilot.Core.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "PhotoPilot.Imaging/1.0.0": {
+        "runtime": {
+          "PhotoPilot.Imaging.dll": {
             "assemblyVersion": "1.0.0.0",
             "fileVersion": "1.0.0.0"
           }
@@ -88,6 +97,11 @@
       "hashPath": "xmpcore.6.1.10.1.nupkg.sha512"
     },
     "PhotoPilot.Core/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "PhotoPilot.Imaging/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

@@ -1,12 +1,5 @@
-C:\Padma\Projects\AI Tools\PhotoPilot\PhotoPilot\src\PhotoPilot.Imaging\bin\Debug\net10.0\PhotoPilot.Imaging.deps.json
-C:\Padma\Projects\AI Tools\PhotoPilot\PhotoPilot\src\PhotoPilot.Imaging\bin\Debug\net10.0\PhotoPilot.Imaging.dll
-C:\Padma\Projects\AI Tools\PhotoPilot\PhotoPilot\src\PhotoPilot.Imaging\bin\Debug\net10.0\PhotoPilot.Imaging.pdb
+C:\Padma\Projects\AI Tools\PhotoPilot\PhotoPilot\src\PhotoPilot.Imaging\obj\Debug\net10.0\PhotoPilot.Imaging.csproj.AssemblyReference.cache
 C:\Padma\Projects\AI Tools\PhotoPilot\PhotoPilot\src\PhotoPilot.Imaging\obj\Debug\net10.0\PhotoPilot.Imaging.GeneratedMSBuildEditorConfig.editorconfig
 C:\Padma\Projects\AI Tools\PhotoPilot\PhotoPilot\src\PhotoPilot.Imaging\obj\Debug\net10.0\PhotoPilot.Imaging.AssemblyInfoInputs.cache
 C:\Padma\Projects\AI Tools\PhotoPilot\PhotoPilot\src\PhotoPilot.Imaging\obj\Debug\net10.0\PhotoPilot.Imaging.AssemblyInfo.cs
 C:\Padma\Projects\AI Tools\PhotoPilot\PhotoPilot\src\PhotoPilot.Imaging\obj\Debug\net10.0\PhotoPilot.Imaging.csproj.CoreCompileInputs.cache
-C:\Padma\Projects\AI Tools\PhotoPilot\PhotoPilot\src\PhotoPilot.Imaging\obj\Debug\net10.0\PhotoPilot.Imaging.sourcelink.json
-C:\Padma\Projects\AI Tools\PhotoPilot\PhotoPilot\src\PhotoPilot.Imaging\obj\Debug\net10.0\PhotoPilot.Imaging.dll
-C:\Padma\Projects\AI Tools\PhotoPilot\PhotoPilot\src\PhotoPilot.Imaging\obj\Debug\net10.0\refint\PhotoPilot.Imaging.dll
-C:\Padma\Projects\AI Tools\PhotoPilot\PhotoPilot\src\PhotoPilot.Imaging\obj\Debug\net10.0\PhotoPilot.Imaging.pdb
-C:\Padma\Projects\AI Tools\PhotoPilot\PhotoPilot\src\PhotoPilot.Imaging\obj\Debug\net10.0\ref\PhotoPilot.Imaging.dll

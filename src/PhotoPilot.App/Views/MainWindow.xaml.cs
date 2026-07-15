@@ -1,16 +1,18 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using PhotoPilot.App.Models;
+using PhotoPilot.Core;
+using PhotoPilot.Imaging;
+using PhotoPilot.Imaging.Models;
+using PhotoPilot.Imaging.Services;
+using PhotoPilot.Metadata;
+using PhotoPilot.Scanner;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using Microsoft.Win32;
-using PhotoPilot.Scanner;
-using PhotoPilot.Core;
-using PhotoPilot.Metadata;
-using PhotoPilot.App.Models;
-
 namespace PhotoPilot.App.Views;
 
 public partial class MainWindow : Window
@@ -37,7 +39,7 @@ public partial class MainWindow : Window
     private readonly IMediaScanner _mediaScanner;
     private readonly MediaCatalogMetadataEnricher _metadataEnricher;
     private readonly MediaCatalog _mediaCatalog;
-
+    private readonly ThumbnailCacheManager _thumbnailCacheManager;
     private CancellationTokenSource? _scanCancellationTokenSource;
     private string? _selectedFolderPath;
 
@@ -52,6 +54,10 @@ public partial class MainWindow : Window
         new ImageMetadataExtractor());
 
         _mediaCatalog = new MediaCatalog();
+
+        _thumbnailCacheManager =
+        new ThumbnailCacheManager(
+        new FileSystemThumbnailGenerator());
     }
 
     private void SelectPhotoFolder_Click(
@@ -169,6 +175,9 @@ public partial class MainWindow : Window
 
             await EnrichCatalogMetadataAsync(
                 _scanCancellationTokenSource.Token);
+
+            await GenerateCatalogThumbnailsAsync(
+            _scanCancellationTokenSource.Token);
 
             PopulateMetadataPreview();
 
@@ -350,6 +359,97 @@ public partial class MainWindow : Window
                 ? $"Showing {previewRows.Length} of {catalogItems.Count}"
                 : $"{previewRows.Length} media item(s)";
     }
+
+
+    private async Task GenerateCatalogThumbnailsAsync(
+    CancellationToken cancellationToken)
+    {
+        IReadOnlyList<MediaItem> photoItems =
+            _mediaCatalog.Items
+                .Where(item => item.Kind == MediaKind.Photo)
+                .ToArray();
+
+        int totalPhotos = photoItems.Count;
+        int processedPhotos = 0;
+        int successfulThumbnails = 0;
+        int failedThumbnails = 0;
+
+        StatusText.Text = "Generating thumbnails...";
+        CurrentFileText.Text = "Preparing thumbnail cache";
+        ScanProgressBar.IsIndeterminate = true;
+
+        foreach (MediaItem item in photoItems)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+
+            StatusText.Text =
+                $"Generating thumbnails: " +
+                $"{processedPhotos + 1} of {totalPhotos}";
+
+            CurrentFileText.Text = item.FilePath;
+
+            ThumbnailResult result =
+                await _thumbnailCacheManager.GetOrCreateAsync(
+                    sourceFilePath: item.FilePath,
+                    maxWidth: 320,
+                    maxHeight: 240,
+                    jpegQuality: 85,
+                    overwriteExisting: false,
+                    cancellationToken: cancellationToken);
+
+            MediaItem updatedItem;
+
+            if (result.Success)
+            {
+                successfulThumbnails++;
+
+                updatedItem = item with
+                {
+                    ThumbnailPath = result.ThumbnailFilePath,
+                    ProcessingStatus =
+                        MediaProcessingStatus.ThumbnailGenerated
+                };
+            }
+            else
+            {
+                failedThumbnails++;
+
+                string errorMessage =
+                    string.IsNullOrWhiteSpace(result.ErrorMessage)
+                        ? "Thumbnail generation failed."
+                        : result.ErrorMessage;
+
+                IReadOnlyList<string> updatedErrors =
+                    item.ProcessingErrors
+                        .Append(errorMessage)
+                        .ToArray();
+
+                updatedItem = item with
+                {
+                    ProcessingStatus =
+                        MediaProcessingStatus.ProcessingFailed,
+
+                    ProcessingErrors = updatedErrors
+                };
+            }
+
+            _mediaCatalog.TryUpdate(updatedItem);
+
+            processedPhotos++;
+        }
+
+        ScanProgressBar.IsIndeterminate = false;
+
+        StatusText.Text =
+            $"Thumbnails completed: " +
+            $"{successfulThumbnails} successful, " +
+            $"{failedThumbnails} failed";
+
+        CurrentFileText.Text =
+            $"Thumbnail cache: " +
+            $"{_thumbnailCacheManager.CacheRootPath}";
+    }
+
 
     private void DisplayScanSummary(
         ScanSummary summary)

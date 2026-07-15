@@ -41,6 +41,19 @@
           "bin/placeholder/PhotoPilot.Core.dll": {}
         }
       },
+      "PhotoPilot.Imaging/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v10.0",
+        "compile": {
+          "bin/placeholder/PhotoPilot.Imaging.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/PhotoPilot.Imaging.dll": {}
+        },
+        "frameworkReferences": [
+          "Microsoft.WindowsDesktop.App.WPF"
+        ]
+      },
       "PhotoPilot.Metadata/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v10.0",
@@ -112,6 +125,11 @@
       "path": "../PhotoPilot.Core/PhotoPilot.Core.csproj",
       "msbuildProject": "../PhotoPilot.Core/PhotoPilot.Core.csproj"
     },
+    "PhotoPilot.Imaging/1.0.0": {
+      "type": "project",
+      "path": "../PhotoPilot.Imaging/PhotoPilot.Imaging.csproj",
+      "msbuildProject": "../PhotoPilot.Imaging/PhotoPilot.Imaging.csproj"
+    },
     "PhotoPilot.Metadata/1.0.0": {
       "type": "project",
       "path": "../PhotoPilot.Metadata/PhotoPilot.Metadata.csproj",
@@ -125,6 +143,7 @@
   },
   "projectFileDependencyGroups": {
     "net10.0-windows": [
+      "PhotoPilot.Imaging >= 1.0.0",
       "PhotoPilot.Metadata >= 1.0.0",
       "PhotoPilot.Scanner >= 1.0.0"
     ]
@@ -163,6 +182,9 @@
           "framework": "net10.0-windows7.0",
           "targetAlias": "net10.0-windows",
           "projectReferences": {
+            "C:\\Padma\\Projects\\AI Tools\\PhotoPilot\\PhotoPilot\\src\\PhotoPilot.Imaging\\PhotoPilot.Imaging.csproj": {
+              "projectPath": "C:\\Padma\\Projects\\AI Tools\\PhotoPilot\\PhotoPilot\\src\\PhotoPilot.Imaging\\PhotoPilot.Imaging.csproj"
+            },
             "C:\\Padma\\Projects\\AI Tools\\PhotoPilot\\PhotoPilot\\src\\PhotoPilot.Metadata\\PhotoPilot.Metadata.csproj": {
               "projectPath": "C:\\Padma\\Projects\\AI Tools\\PhotoPilot\\PhotoPilot\\src\\PhotoPilot.Metadata\\PhotoPilot.Metadata.csproj"
             },

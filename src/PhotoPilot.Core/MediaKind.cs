@@ -1,0 +1,7 @@
+﻿namespace PhotoPilot.Core;
+
+public enum MediaKind
+{
+    Photo = 1,
+    Video = 2
+}
