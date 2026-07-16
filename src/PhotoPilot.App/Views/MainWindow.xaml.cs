@@ -29,6 +29,9 @@ public partial class MainWindow : Window
     private DuplicateDetectionResult?
         _lastDuplicateDetectionResult;
 
+    private DuplicateReviewSession?
+    _duplicateReviewSession;
+
     private List<LibraryCardItem> _libraryCards = new();
     private static readonly HashSet<string> SupportedMediaExtensions =
         new(StringComparer.OrdinalIgnoreCase)
@@ -76,6 +79,33 @@ public partial class MainWindow : Window
         _thumbnailCacheManager =
         new ThumbnailCacheManager(
         new FileSystemThumbnailGenerator());
+    }
+
+    private void OpenDuplicateReview_Click(
+    object sender,
+    RoutedEventArgs e)
+    {
+        if (_duplicateReviewSession is null ||
+            _duplicateReviewSession.Groups.Count == 0)
+        {
+            MessageBox.Show(
+                this,
+                "No duplicate groups are available for review. Run duplicate detection first.",
+                "No Duplicates Available",
+                MessageBoxButton.OK,
+                MessageBoxImage.Information);
+
+            return;
+        }
+
+        var reviewWindow =
+            new DuplicateReviewWindow(
+                _duplicateReviewSession)
+            {
+                Owner = this
+            };
+
+        reviewWindow.ShowDialog();
     }
 
     private async void FindDuplicates_Click(
@@ -132,7 +162,15 @@ public partial class MainWindow : Window
             _lastDuplicateDetectionResult =
                 result;
 
+            _duplicateReviewSession =
+                CreateDuplicateReviewSession(result);
+
             DisplayDuplicateDetectionResult(result);
+
+            OpenDuplicateReviewButton.IsEnabled =
+                !result.WasCancelled &&
+                result.DuplicateGroupCount > 0;
+
         }
         catch (OperationCanceledException)
         {
@@ -186,6 +224,148 @@ public partial class MainWindow : Window
             $"{progress.FilesSkipped} unique-size file(s) skipped; " +
             $"{progress.FailedFiles} failure(s).";
     }
+
+    private static DuplicateReviewSession
+    CreateDuplicateReviewSession(
+        DuplicateDetectionResult result)
+    {
+        ArgumentNullException.ThrowIfNull(result);
+
+        var session =
+            new DuplicateReviewSession
+            {
+                CurrentGroupIndex = 0
+            };
+
+        foreach (DuplicateGroup duplicateGroup in result.Groups)
+        {
+            var reviewGroup =
+                new DuplicateReviewGroup
+                {
+                    GroupId = duplicateGroup.Id,
+                    FileHash = duplicateGroup.FileHash,
+                    RecoverableBytes =
+                        duplicateGroup.RecoverableBytes
+                };
+
+            DuplicateFileItem? recommendedFile =
+                SelectRecommendedKeep(
+                    duplicateGroup.Files);
+
+            foreach (
+                DuplicateFileItem duplicateFile
+                in duplicateGroup.Files)
+            {
+                bool isRecommended =
+                    recommendedFile is not null &&
+                    recommendedFile.MediaItemId ==
+                    duplicateFile.MediaItemId;
+
+                reviewGroup.Items.Add(
+                    new DuplicateReviewItem
+                    {
+                        MediaItemId =
+                            duplicateFile.MediaItemId,
+
+                        FilePath =
+                            duplicateFile.FilePath,
+
+                        FileName =
+                            duplicateFile.FileName,
+
+                        ThumbnailPath =
+                            duplicateFile.ThumbnailPath
+                            ?? string.Empty,
+
+                        FileHash =
+                            duplicateFile.FileHash,
+
+                        FileSizeBytes =
+                            duplicateFile.FileSizeBytes,
+
+                        CreatedDate =
+                            duplicateFile.FileCreatedDate,
+
+                        ModifiedDate =
+                            duplicateFile.FileModifiedDate,
+
+                        IsRecommendedKeep =
+                            isRecommended,
+
+                        IsSelectedToKeep =
+                            isRecommended,
+
+                        IsSelectedToDelete =
+                            !isRecommended
+                    });
+            }
+
+            session.Groups.Add(reviewGroup);
+        }
+
+        return session;
+    }
+
+    private static DuplicateFileItem?
+    SelectRecommendedKeep(
+        IReadOnlyList<DuplicateFileItem> files)
+    {
+        if (files.Count == 0)
+        {
+            return null;
+        }
+
+        return files
+            .OrderBy(
+                file =>
+                    IsLikelyCopyFileName(
+                        file.FileName))
+            .ThenBy(
+                file =>
+                    file.FileCreatedDate)
+            .ThenBy(
+                file =>
+                    file.FilePath.Length)
+            .ThenBy(
+                file =>
+                    file.FilePath,
+                StringComparer.OrdinalIgnoreCase)
+            .First();
+    }
+
+    private static bool IsLikelyCopyFileName(
+    string fileName)
+    {
+        if (string.IsNullOrWhiteSpace(fileName))
+        {
+            return false;
+        }
+
+        string name =
+            Path.GetFileNameWithoutExtension(
+                fileName);
+
+        return name.Contains(
+                   "copy",
+                   StringComparison.OrdinalIgnoreCase)
+               ||
+               name.EndsWith(
+                   " - copy",
+                   StringComparison.OrdinalIgnoreCase)
+               ||
+               name.EndsWith(
+                   "_copy",
+                   StringComparison.OrdinalIgnoreCase)
+               ||
+               name.EndsWith(
+                   "(1)",
+                   StringComparison.OrdinalIgnoreCase)
+               ||
+               name.EndsWith(
+                   "(2)",
+                   StringComparison.OrdinalIgnoreCase);
+    }
+
 
     private void DisplayDuplicateDetectionResult(
     DuplicateDetectionResult result)
@@ -276,11 +456,20 @@ public partial class MainWindow : Window
 
         CancelScanButton.IsEnabled =
             isRunning;
+
+        OpenDuplicateReviewButton.IsEnabled =
+             !isRunning &&
+            _duplicateReviewSession is not null &&
+            _duplicateReviewSession.Groups.Count > 0;
+
     }
 
     private void ResetDuplicateSummary()
     {
         _lastDuplicateDetectionResult = null;
+        _duplicateReviewSession = null;
+
+        OpenDuplicateReviewButton.IsEnabled = false;
 
         DuplicateGroupCountText.Text = "0";
         DuplicateFileCountText.Text = "0";

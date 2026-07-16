@@ -486,6 +486,15 @@
                                     Content="Find Duplicates"
                                     IsEnabled="False"
                                     Click="FindDuplicates_Click"/>
+
+                            <Button x:Name="OpenDuplicateReviewButton"
+                                    Width="175"
+                                    Height="46"
+                                    Margin="12,0,0,0"
+                                    Content="Review Duplicates"
+                                    IsEnabled="False"
+                                    Click="OpenDuplicateReview_Click"/>
+                            
                         </StackPanel>
 
                         <!-- Selected folder -->

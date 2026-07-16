@@ -10,11 +10,11 @@ none
 false
 TRACE;DEBUG;NET;NET10_0;NETCOREAPP;WINDOWS;WINDOWS7_0;NET5_0_OR_GREATER;NET6_0_OR_GREATER;NET7_0_OR_GREATER;NET8_0_OR_GREATER;NET9_0_OR_GREATER;NET10_0_OR_GREATER;NETCOREAPP3_0_OR_GREATER;NETCOREAPP3_1_OR_GREATER;WINDOWS7_0_OR_GREATER
 C:\Padma\Projects\AI Tools\PhotoPilot\PhotoPilot\src\PhotoPilot.App\App.xaml
-394058885
+4895830699
 
-61120383704
+101743789207
 213-266372451
-Themes\AppTheme.xaml;Views\Controls\LibraryCardControl.xaml;Views\MainWindow.xaml;
+Themes\AppTheme.xaml;Views\Controls\LibraryCardControl.xaml;Views\DuplicateReviewWindow.xaml;Views\MainWindow.xaml;
 
 False
 

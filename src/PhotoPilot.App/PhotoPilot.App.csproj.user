@@ -5,6 +5,9 @@
     <Compile Update="Views\Controls\LibraryCardControl.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Views\DuplicateReviewWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Views\MainWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>

@@ -1,0 +1,340 @@
+﻿<Window x:Class="PhotoPilot.App.Views.DuplicateReviewWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="PhotoPilot - Duplicate Review Center"
+        Width="1200"
+        Height="780"
+        MinWidth="900"
+        MinHeight="620"
+        WindowStartupLocation="CenterOwner">
+
+    <Grid Background="{StaticResource BackgroundBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="82"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="58"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <Border Grid.Row="0"
+                Padding="28,0"
+                Background="{StaticResource CardBackgroundBrush}"
+                BorderBrush="{StaticResource AppBorderBrush}"
+                BorderThickness="0,0,0,1">
+
+            <DockPanel VerticalAlignment="Center">
+                <StackPanel DockPanel.Dock="Left">
+                    <TextBlock Text="Duplicate Review Center"
+                               FontSize="26"
+                               FontWeight="Bold"
+                               Foreground="{StaticResource PrimaryBrush}"/>
+
+                    <TextBlock Margin="0,4,0,0"
+                               Text="Review exact duplicate files before taking any cleanup action."
+                               FontSize="13"
+                               Foreground="{StaticResource TextSecondaryBrush}"/>
+                </StackPanel>
+
+                <StackPanel HorizontalAlignment="Right"
+                            VerticalAlignment="Center">
+
+                    <TextBlock x:Name="GroupPositionText"
+                               Text="Group 0 of 0"
+                               HorizontalAlignment="Right"
+                               FontSize="15"
+                               FontWeight="SemiBold"/>
+
+                    <TextBlock x:Name="RecoverableSpaceText"
+                               Margin="0,4,0,0"
+                               Text="Recoverable space: 0 bytes"
+                               HorizontalAlignment="Right"
+                               FontSize="12"
+                               Foreground="{StaticResource TextSecondaryBrush}"/>
+                </StackPanel>
+            </DockPanel>
+        </Border>
+
+        <!-- Main content -->
+        <Grid Grid.Row="1"
+              Margin="28">
+
+            <Border Padding="20"
+                    Background="{StaticResource CardBackgroundBrush}"
+                    BorderBrush="{StaticResource AppBorderBrush}"
+                    BorderThickness="1"
+                    CornerRadius="12">
+
+                <Grid>
+                    <!-- Empty-state panel -->
+                    <StackPanel x:Name="EmptyStatePanel"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center">
+
+                        <TextBlock Text="✓"
+                                   FontSize="52"
+                                   HorizontalAlignment="Center"
+                                   Foreground="{StaticResource PrimaryBrush}"/>
+
+                        <TextBlock Margin="0,14,0,0"
+                                   Text="No duplicate groups available"
+                                   FontSize="22"
+                                   FontWeight="SemiBold"
+                                   HorizontalAlignment="Center"/>
+
+                        <TextBlock Margin="0,8,0,0"
+                                   Text="Run exact duplicate detection before opening the review center."
+                                   FontSize="13"
+                                   Foreground="{StaticResource TextSecondaryBrush}"
+                                   TextAlignment="Center"/>
+                    </StackPanel>
+
+                    <!-- Duplicate-group content -->
+                    <Grid x:Name="ReviewContentPanel"
+                          Visibility="Collapsed">
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <!-- Current group summary -->
+                        <Border Grid.Row="0"
+                                Padding="14"
+                                Margin="0,0,0,18"
+                                Background="#F8FAFC"
+                                BorderBrush="{StaticResource AppBorderBrush}"
+                                BorderThickness="1"
+                                CornerRadius="8">
+
+                            <DockPanel>
+                                <StackPanel DockPanel.Dock="Left">
+                                    <TextBlock Text="Current Duplicate Group"
+                                               FontSize="15"
+                                               FontWeight="SemiBold"/>
+
+                                    <TextBlock x:Name="GroupHashText"
+                                               Margin="0,5,0,0"
+                                               FontSize="11"
+                                               Foreground="{StaticResource TextSecondaryBrush}"
+                                               TextTrimming="CharacterEllipsis"/>
+                                </StackPanel>
+
+                                <StackPanel HorizontalAlignment="Right">
+                                    <TextBlock x:Name="GroupFileCountText"
+                                               Text="0 files"
+                                               HorizontalAlignment="Right"
+                                               FontSize="14"
+                                               FontWeight="SemiBold"/>
+
+                                    <TextBlock x:Name="GroupRecoverableText"
+                                               Margin="0,5,0,0"
+                                               Text="0 bytes recoverable"
+                                               HorizontalAlignment="Right"
+                                               FontSize="12"
+                                               Foreground="{StaticResource TextSecondaryBrush}"/>
+                                </StackPanel>
+                            </DockPanel>
+                        </Border>
+
+                        <!-- Duplicate files -->
+                        <ScrollViewer Grid.Row="1"
+                                      VerticalScrollBarVisibility="Auto"
+                                      HorizontalScrollBarVisibility="Disabled">
+
+                            <ItemsControl x:Name="DuplicateItemsControl">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <WrapPanel Orientation="Horizontal"
+                                                   HorizontalAlignment="Left"/>
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border Width="250"
+                                                Margin="8"
+                                                Padding="0"
+                                                Background="{StaticResource CardBackgroundBrush}"
+                                                BorderBrush="{StaticResource AppBorderBrush}"
+                                                BorderThickness="1"
+                                                CornerRadius="10">
+
+                                            <Grid>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="180"/>
+                                                    <RowDefinition Height="*"/>
+                                                </Grid.RowDefinitions>
+
+                                                <!-- Thumbnail -->
+                                                <Border Grid.Row="0"
+                                                        Background="#EEF2F7"
+                                                        CornerRadius="10,10,0,0"
+                                                        ClipToBounds="True">
+
+                                                    <Grid>
+                                                        <Image Source="{Binding ThumbnailPath}"
+                                                               Stretch="UniformToFill">
+
+                                                            <Image.Style>
+                                                                <Style TargetType="Image">
+                                                                    <Setter Property="Visibility"
+                                                                            Value="Visible"/>
+
+                                                                    <Style.Triggers>
+                                                                        <DataTrigger Binding="{Binding HasThumbnail}"
+                                                                                     Value="False">
+                                                                            <Setter Property="Visibility"
+                                                                                    Value="Collapsed"/>
+                                                                        </DataTrigger>
+                                                                    </Style.Triggers>
+                                                                </Style>
+                                                            </Image.Style>
+                                                        </Image>
+
+                                                        <StackPanel HorizontalAlignment="Center"
+                                                                    VerticalAlignment="Center">
+
+                                                            <StackPanel.Style>
+                                                                <Style TargetType="StackPanel">
+                                                                    <Setter Property="Visibility"
+                                                                            Value="Collapsed"/>
+
+                                                                    <Style.Triggers>
+                                                                        <DataTrigger Binding="{Binding HasThumbnail}"
+                                                                                     Value="False">
+                                                                            <Setter Property="Visibility"
+                                                                                    Value="Visible"/>
+                                                                        </DataTrigger>
+                                                                    </Style.Triggers>
+                                                                </Style>
+                                                            </StackPanel.Style>
+
+                                                            <TextBlock Text="📷"
+                                                                       FontSize="38"
+                                                                       HorizontalAlignment="Center"/>
+
+                                                            <TextBlock Margin="0,6,0,0"
+                                                                       Text="Preview unavailable"
+                                                                       FontSize="12"
+                                                                       Foreground="{StaticResource TextSecondaryBrush}"/>
+                                                        </StackPanel>
+
+                                                        <!-- Recommended badge -->
+                                                        <Border Margin="10"
+                                                                Padding="8,4"
+                                                                HorizontalAlignment="Left"
+                                                                VerticalAlignment="Top"
+                                                                Background="#DCFCE7"
+                                                                CornerRadius="7">
+
+                                                            <Border.Style>
+                                                                <Style TargetType="Border">
+                                                                    <Setter Property="Visibility"
+                                                                            Value="Collapsed"/>
+
+                                                                    <Style.Triggers>
+                                                                        <DataTrigger Binding="{Binding IsRecommendedKeep}"
+                                                                                     Value="True">
+                                                                            <Setter Property="Visibility"
+                                                                                    Value="Visible"/>
+                                                                        </DataTrigger>
+                                                                    </Style.Triggers>
+                                                                </Style>
+                                                            </Border.Style>
+
+                                                            <TextBlock Text="Recommended"
+                                                                       FontSize="11"
+                                                                       FontWeight="SemiBold"
+                                                                       Foreground="#166534"/>
+                                                        </Border>
+                                                    </Grid>
+                                                </Border>
+
+                                                <!-- File information -->
+                                                <StackPanel Grid.Row="1"
+                                                            Margin="14">
+
+                                                    <TextBlock Text="{Binding FileName}"
+                                                               FontSize="15"
+                                                               FontWeight="SemiBold"
+                                                               TextTrimming="CharacterEllipsis"
+                                                               ToolTip="{Binding FilePath}"/>
+
+                                                    <TextBlock Margin="0,7,0,0"
+                                                               Text="{Binding FilePath}"
+                                                               FontSize="11"
+                                                               TextWrapping="Wrap"
+                                                               MaxHeight="48"
+                                                               Foreground="{StaticResource TextSecondaryBrush}"/>
+
+                                                    <Separator Margin="0,10,0,8"/>
+
+                                                    <TextBlock Text="{Binding CreatedDate,
+                                                                            StringFormat=Created: {0:yyyy-MM-dd HH:mm}}"
+                                                               FontSize="11"
+                                                               Foreground="{StaticResource TextSecondaryBrush}"/>
+
+                                                    <TextBlock Margin="0,4,0,0"
+                                                               Text="{Binding ModifiedDate,
+                                                                            StringFormat=Modified: {0:yyyy-MM-dd HH:mm}}"
+                                                               FontSize="11"
+                                                               Foreground="{StaticResource TextSecondaryBrush}"/>
+
+                                                    <TextBlock Margin="0,4,0,0"
+                                                               Text="{Binding FileSizeBytes,
+                                                                            StringFormat=Size: {0:N0} bytes}"
+                                                               FontSize="11"
+                                                               Foreground="{StaticResource TextSecondaryBrush}"/>
+                                                </StackPanel>
+                                            </Grid>
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </ScrollViewer>
+                    </Grid>
+                </Grid>
+            </Border>
+        </Grid>
+
+        <!-- Footer navigation -->
+        <Border Grid.Row="2"
+                Padding="28,0"
+                Background="{StaticResource CardBackgroundBrush}"
+                BorderBrush="{StaticResource AppBorderBrush}"
+                BorderThickness="0,1,0,0">
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Button x:Name="PreviousGroupButton"
+                        Grid.Column="0"
+                        Width="140"
+                        Height="38"
+                        HorizontalAlignment="Left"
+                        Content="Previous Group"
+                        IsEnabled="False"
+                        Click="PreviousGroupButton_Click"/>
+
+                <TextBlock x:Name="FooterStatusText"
+                           Grid.Column="1"
+                           VerticalAlignment="Center"
+                           Text="No duplicate group selected"
+                           Foreground="{StaticResource TextSecondaryBrush}"/>
+
+                <Button x:Name="NextGroupButton"
+                        Grid.Column="2"
+                        Width="140"
+                        Height="38"
+                        HorizontalAlignment="Right"
+                        Content="Next Group"
+                        IsEnabled="False"
+                        Click="NextGroupButton_Click"/>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>
