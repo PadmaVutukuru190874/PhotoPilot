@@ -1,6 +1,7 @@
 ﻿<Window x:Class="PhotoPilot.App.Views.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="clr-namespace:PhotoPilot.App.Views.Controls"
         Title="PhotoPilot"
         Width="1200"
         Height="750"
@@ -37,6 +38,386 @@
             </DockPanel>
         </Border>
 
+        <!-- Photo Library -->
+<Border Margin="0,24,0,0"
+        Padding="16"
+        BorderBrush="{StaticResource AppBorderBrush}"
+        BorderThickness="1"
+        CornerRadius="10"
+        Background="{StaticResource CardBackgroundBrush}">
+
+    <StackPanel>
+        <DockPanel Margin="0,0,0,14">
+
+            <StackPanel DockPanel.Dock="Left">
+                <TextBlock Text="Media Library"
+                           FontSize="18"
+                           FontWeight="SemiBold"/>
+
+                <TextBlock Margin="0,4,0,0"
+                           Text="Photos and videos discovered in the selected folder"
+                           FontSize="12"
+                           Foreground="{StaticResource TextSecondaryBrush}"/>
+            </StackPanel>
+
+            <TextBlock x:Name="LibraryCountText"
+                       Text="No media loaded"
+                       Margin="20,0,0,0"
+                       FontSize="12"
+                       Foreground="{StaticResource TextSecondaryBrush}"
+                       VerticalAlignment="Center"
+                       HorizontalAlignment="Right"/>
+
+                    <StackPanel Orientation="Horizontal"
+            Margin="0,18,0,14">
+
+                        <TextBox x:Name="SearchTextBox"
+             Width="260"
+             Height="34"
+             VerticalContentAlignment="Center"
+             TextChanged="SearchTextBox_TextChanged"
+             ToolTip="Search filename"/>
+
+                        <ComboBox x:Name="MediaFilterComboBox"
+              Width="140"
+              Margin="12,0,0,0"
+              Height="34"
+              SelectionChanged="MediaFilterComboBox_SelectionChanged">
+
+                            <ComboBoxItem IsSelected="True">
+                                All
+                            </ComboBoxItem>
+
+                            <ComboBoxItem>
+                                Photos
+                            </ComboBoxItem>
+
+                            <ComboBoxItem>
+                                Videos
+                            </ComboBoxItem>
+
+                        </ComboBox>
+
+                        <ComboBox x:Name="SortComboBox"
+              Width="180"
+              Margin="12,0,0,0"
+              Height="34"
+              SelectionChanged="SortComboBox_SelectionChanged">
+
+                            <ComboBoxItem IsSelected="True">
+                                Date Taken
+                            </ComboBoxItem>
+
+                            <ComboBoxItem>
+                                File Name
+                            </ComboBoxItem>
+
+                            <ComboBoxItem>
+                                File Size
+                            </ComboBoxItem>
+
+                        </ComboBox>
+
+                    </StackPanel>
+            
+                </DockPanel>
+
+        <Border Background="#F8FAFC"
+                BorderBrush="{StaticResource AppBorderBrush}"
+                BorderThickness="1"
+                CornerRadius="8"
+                MinHeight="300">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="12"/>
+                            <ColumnDefinition Width="340"/>
+                        </Grid.ColumnDefinitions>
+
+                        <!-- Library grid -->
+                        <Border Grid.Column="0"
+            Background="#F8FAFC"
+            BorderBrush="{StaticResource AppBorderBrush}"
+            BorderThickness="1"
+            CornerRadius="8"
+            MinHeight="420">
+
+                            <Grid>
+                                <ListBox x:Name="LibraryItemsControl"
+                     Height="540"
+                     Padding="10"
+                     BorderThickness="0"
+                     Background="Transparent"
+                     ScrollViewer.VerticalScrollBarVisibility="Auto"
+                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                     SelectionMode="Single"
+                     SelectionChanged="LibraryItemsControl_SelectionChanged">
+
+                                    <ListBox.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <WrapPanel Orientation="Horizontal"
+                                   HorizontalAlignment="Left"/>
+                                        </ItemsPanelTemplate>
+                                    </ListBox.ItemsPanel>
+
+                                    <ListBox.ItemContainerStyle>
+                                        <Style TargetType="ListBoxItem">
+                                            <Setter Property="Padding" Value="0"/>
+                                            <Setter Property="Margin" Value="0"/>
+                                            <Setter Property="Background" Value="Transparent"/>
+                                            <Setter Property="BorderThickness" Value="0"/>
+                                            <Setter Property="HorizontalContentAlignment"
+                                Value="Stretch"/>
+
+                                            <Style.Triggers>
+                                                <Trigger Property="IsSelected"
+                                     Value="True">
+                                                    <Setter Property="Background"
+                                        Value="#DBEAFE"/>
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </ListBox.ItemContainerStyle>
+
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <controls:LibraryCardControl Width="240"
+                                                     Margin="4"/>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                </ListBox>
+
+                                <!-- Empty-library message -->
+                                <StackPanel HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        IsHitTestVisible="False">
+
+                                    <StackPanel.Style>
+                                        <Style TargetType="StackPanel">
+                                            <Setter Property="Visibility"
+                                Value="Visible"/>
+
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding ElementName=LibraryItemsControl,
+                                                          Path=HasItems}"
+                                         Value="True">
+                                                    <Setter Property="Visibility"
+                                        Value="Collapsed"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </StackPanel.Style>
+
+                                    <TextBlock Text="📷"
+                           FontSize="40"
+                           HorizontalAlignment="Center"/>
+
+                                    <TextBlock Margin="0,10,0,0"
+                           Text="No media loaded"
+                           FontSize="16"
+                           FontWeight="SemiBold"
+                           HorizontalAlignment="Center"/>
+
+                                    <TextBlock Margin="0,5,0,0"
+                           Text="Select a folder and run a scan to populate the library."
+                           FontSize="12"
+                           Foreground="{StaticResource TextSecondaryBrush}"
+                           HorizontalAlignment="Center"/>
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+
+                        <!-- Selected item details -->
+                        <Border Grid.Column="2"
+            Padding="18"
+            Background="{StaticResource CardBackgroundBrush}"
+            BorderBrush="{StaticResource AppBorderBrush}"
+            BorderThickness="1"
+            CornerRadius="10">
+
+                            <Grid>
+                                <!-- Empty details message -->
+                                <StackPanel x:Name="NoSelectionPanel"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center">
+
+                                    <TextBlock Text="🖼"
+                           FontSize="40"
+                           HorizontalAlignment="Center"/>
+
+                                    <TextBlock Margin="0,12,0,0"
+                           Text="No item selected"
+                           FontSize="16"
+                           FontWeight="SemiBold"
+                           HorizontalAlignment="Center"/>
+
+                                    <TextBlock Margin="0,6,0,0"
+                           Text="Select a photo or video to view its details."
+                           FontSize="12"
+                           TextAlignment="Center"
+                           TextWrapping="Wrap"
+                           Foreground="{StaticResource TextSecondaryBrush}"/>
+                                </StackPanel>
+
+                                <!-- Details content -->
+                                <ScrollViewer x:Name="SelectedItemDetailsPanel"
+                          Visibility="Collapsed"
+                          VerticalScrollBarVisibility="Auto">
+
+                                    <StackPanel>
+                                        <Border Height="220"
+                            Background="#EEF2F7"
+                            BorderBrush="{StaticResource AppBorderBrush}"
+                            BorderThickness="1"
+                            CornerRadius="8"
+                            ClipToBounds="True">
+
+                                            <Grid>
+                                                <Image x:Name="SelectedThumbnailImage"
+                                   Stretch="Uniform"/>
+
+                                                <TextBlock x:Name="SelectedThumbnailPlaceholder"
+                                       Text="Preview unavailable"
+                                       FontSize="14"
+                                       Foreground="{StaticResource TextSecondaryBrush}"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"/>
+                                            </Grid>
+                                        </Border>
+
+                                        <TextBlock x:Name="SelectedFileNameText"
+                               Margin="0,18,0,0"
+                               FontSize="20"
+                               FontWeight="SemiBold"
+                               TextWrapping="Wrap"/>
+
+                                        <TextBlock x:Name="SelectedFilePathText"
+                               Margin="0,6,0,16"
+                               FontSize="11"
+                               TextWrapping="Wrap"
+                               Foreground="{StaticResource TextSecondaryBrush}"/>
+
+                                        <Separator/>
+
+                                        <Grid Margin="0,14,0,0">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="105"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                            </Grid.RowDefinitions>
+
+                                            <TextBlock Grid.Row="0"
+                                   Grid.Column="0"
+                                   Text="Type"
+                                   FontWeight="SemiBold"/>
+
+                                            <TextBlock x:Name="SelectedMediaTypeText"
+                                   Grid.Row="0"
+                                   Grid.Column="1"
+                                   TextWrapping="Wrap"/>
+
+                                            <TextBlock Grid.Row="1"
+                                   Grid.Column="0"
+                                   Margin="0,10,0,0"
+                                   Text="Date taken"
+                                   FontWeight="SemiBold"/>
+
+                                            <TextBlock x:Name="SelectedDateTakenText"
+                                   Grid.Row="1"
+                                   Grid.Column="1"
+                                   Margin="0,10,0,0"
+                                   TextWrapping="Wrap"/>
+
+                                            <TextBlock Grid.Row="2"
+                                   Grid.Column="0"
+                                   Margin="0,10,0,0"
+                                   Text="Camera"
+                                   FontWeight="SemiBold"/>
+
+                                            <TextBlock x:Name="SelectedCameraText"
+                                   Grid.Row="2"
+                                   Grid.Column="1"
+                                   Margin="0,10,0,0"
+                                   TextWrapping="Wrap"/>
+
+                                            <TextBlock Grid.Row="3"
+                                   Grid.Column="0"
+                                   Margin="0,10,0,0"
+                                   Text="Resolution"
+                                   FontWeight="SemiBold"/>
+
+                                            <TextBlock x:Name="SelectedResolutionText"
+                                   Grid.Row="3"
+                                   Grid.Column="1"
+                                   Margin="0,10,0,0"/>
+
+                                            <TextBlock Grid.Row="4"
+                                   Grid.Column="0"
+                                   Margin="0,10,0,0"
+                                   Text="File size"
+                                   FontWeight="SemiBold"/>
+
+                                            <TextBlock x:Name="SelectedFileSizeText"
+                                   Grid.Row="4"
+                                   Grid.Column="1"
+                                   Margin="0,10,0,0"/>
+
+                                            <TextBlock Grid.Row="5"
+                                   Grid.Column="0"
+                                   Margin="0,10,0,0"
+                                   Text="Location"
+                                   FontWeight="SemiBold"/>
+
+                                            <TextBlock x:Name="SelectedLocationText"
+                                   Grid.Row="5"
+                                   Grid.Column="1"
+                                   Margin="0,10,0,0"
+                                   TextWrapping="Wrap"/>
+
+                                            <TextBlock Grid.Row="6"
+                                   Grid.Column="0"
+                                   Margin="0,10,0,0"
+                                   Text="Status"
+                                   FontWeight="SemiBold"/>
+
+                                            <TextBlock x:Name="SelectedStatusText"
+                                   Grid.Row="6"
+                                   Grid.Column="1"
+                                   Margin="0,10,0,0"
+                                   TextWrapping="Wrap"/>
+
+                                            <TextBlock Grid.Row="7"
+                                   Grid.Column="0"
+                                   Margin="0,10,0,0"
+                                   Text="Media ID"
+                                   FontWeight="SemiBold"/>
+
+                                            <TextBlock x:Name="SelectedMediaIdText"
+                                   Grid.Row="7"
+                                   Grid.Column="1"
+                                   Margin="0,10,0,0"
+                                   FontSize="11"
+                                   TextWrapping="Wrap"
+                                   Foreground="{StaticResource TextSecondaryBrush}"/>
+                                        </Grid>
+                                    </StackPanel>
+                                </ScrollViewer>
+                            </Grid>
+                        </Border>
+                    </Grid>
+                </Border>
+    </StackPanel>
+</Border>
         <!-- Main content -->
         <ScrollViewer Grid.Row="1"
                       VerticalScrollBarVisibility="Auto">

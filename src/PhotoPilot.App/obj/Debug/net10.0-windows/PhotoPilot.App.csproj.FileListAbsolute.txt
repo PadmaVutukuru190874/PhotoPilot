@@ -15,11 +15,15 @@ C:\Padma\Projects\AI Tools\PhotoPilot\PhotoPilot\src\PhotoPilot.App\bin\Debug\ne
 C:\Padma\Projects\AI Tools\PhotoPilot\PhotoPilot\src\PhotoPilot.App\bin\Debug\net10.0-windows\PhotoPilot.Core.pdb
 C:\Padma\Projects\AI Tools\PhotoPilot\PhotoPilot\src\PhotoPilot.App\obj\Debug\net10.0-windows\PhotoPilot.App.csproj.AssemblyReference.cache
 C:\Padma\Projects\AI Tools\PhotoPilot\PhotoPilot\src\PhotoPilot.App\obj\Debug\net10.0-windows\Themes\AppTheme.baml
-C:\Padma\Projects\AI Tools\PhotoPilot\PhotoPilot\src\PhotoPilot.App\obj\Debug\net10.0-windows\Views\MainWindow.baml
+C:\Padma\Projects\AI Tools\PhotoPilot\PhotoPilot\src\PhotoPilot.App\obj\Debug\net10.0-windows\Views\Controls\LibraryCardControl.baml
 C:\Padma\Projects\AI Tools\PhotoPilot\PhotoPilot\src\PhotoPilot.App\obj\Debug\net10.0-windows\App.baml
+C:\Padma\Projects\AI Tools\PhotoPilot\PhotoPilot\src\PhotoPilot.App\obj\Debug\net10.0-windows\Views\Controls\LibraryCardControl.g.cs
 C:\Padma\Projects\AI Tools\PhotoPilot\PhotoPilot\src\PhotoPilot.App\obj\Debug\net10.0-windows\Views\MainWindow.g.cs
 C:\Padma\Projects\AI Tools\PhotoPilot\PhotoPilot\src\PhotoPilot.App\obj\Debug\net10.0-windows\App.g.cs
+C:\Padma\Projects\AI Tools\PhotoPilot\PhotoPilot\src\PhotoPilot.App\obj\Debug\net10.0-windows\GeneratedInternalTypeHelper.g.cs
 C:\Padma\Projects\AI Tools\PhotoPilot\PhotoPilot\src\PhotoPilot.App\obj\Debug\net10.0-windows\PhotoPilot.App_MarkupCompile.cache
+C:\Padma\Projects\AI Tools\PhotoPilot\PhotoPilot\src\PhotoPilot.App\obj\Debug\net10.0-windows\PhotoPilot.App_MarkupCompile.lref
+C:\Padma\Projects\AI Tools\PhotoPilot\PhotoPilot\src\PhotoPilot.App\obj\Debug\net10.0-windows\Views\MainWindow.baml
 C:\Padma\Projects\AI Tools\PhotoPilot\PhotoPilot\src\PhotoPilot.App\obj\Debug\net10.0-windows\PhotoPilot.App.g.resources
 C:\Padma\Projects\AI Tools\PhotoPilot\PhotoPilot\src\PhotoPilot.App\obj\Debug\net10.0-windows\PhotoPilot.App.GeneratedMSBuildEditorConfig.editorconfig
 C:\Padma\Projects\AI Tools\PhotoPilot\PhotoPilot\src\PhotoPilot.App\obj\Debug\net10.0-windows\PhotoPilot.App.AssemblyInfoInputs.cache

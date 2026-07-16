@@ -13,10 +13,14 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Media.Imaging;
+
 namespace PhotoPilot.App.Views;
 
 public partial class MainWindow : Window
 {
+    private List<LibraryCardItem> _libraryCards = new();
     private static readonly HashSet<string> SupportedMediaExtensions =
         new(StringComparer.OrdinalIgnoreCase)
         {
@@ -47,6 +51,8 @@ public partial class MainWindow : Window
     {
         InitializeComponent();
 
+        Loaded += (_, _) => RefreshLibrary();
+
         _mediaScanner = new FileSystemMediaScanner();
 
         _metadataEnricher =
@@ -60,6 +66,63 @@ public partial class MainWindow : Window
         new FileSystemThumbnailGenerator());
     }
 
+    private void LibraryItemsControl_SelectionChanged(
+    object sender,
+    SelectionChangedEventArgs e)
+    {
+        if (LibraryItemsControl.SelectedItem
+            is not LibraryCardItem selectedItem)
+        {
+            ClearSelectedItemDetails();
+            return;
+        }
+
+        ShowSelectedItemDetails(selectedItem);
+    }
+
+
+    private void ShowSelectedItemDetails(
+    LibraryCardItem selectedItem)
+    {
+        NoSelectionPanel.Visibility =
+            Visibility.Collapsed;
+
+        SelectedItemDetailsPanel.Visibility =
+            Visibility.Visible;
+
+        SelectedFileNameText.Text =
+            selectedItem.FileName;
+
+        SelectedFilePathText.Text =
+            selectedItem.FilePath;
+
+        SelectedMediaTypeText.Text =
+            selectedItem.MediaType;
+
+        SelectedDateTakenText.Text =
+            selectedItem.DateTaken;
+
+        SelectedCameraText.Text =
+            selectedItem.Camera;
+
+        SelectedResolutionText.Text =
+            selectedItem.Resolution;
+
+        SelectedFileSizeText.Text =
+            selectedItem.FileSize;
+
+        SelectedLocationText.Text =
+            selectedItem.Location;
+
+        SelectedStatusText.Text =
+            selectedItem.ProcessingStatus;
+
+        SelectedMediaIdText.Text =
+            selectedItem.MediaItemId.ToString();
+
+        LoadSelectedThumbnail(
+            selectedItem.ThumbnailPath);
+    }
     private void SelectPhotoFolder_Click(
         object sender,
         RoutedEventArgs e)
@@ -180,6 +243,9 @@ public partial class MainWindow : Window
             _scanCancellationTokenSource.Token);
 
             PopulateMetadataPreview();
+
+            PopulateLibraryCards();
+            RefreshLibrary();
 
             ScanProgressBar.IsIndeterminate = false;
 
@@ -360,6 +426,326 @@ public partial class MainWindow : Window
                 : $"{previewRows.Length} media item(s)";
     }
 
+    private void PopulateLibraryCards()
+    {
+        IReadOnlyList<MediaItem> catalogItems =
+            _mediaCatalog.Items;
+
+        _libraryCards  =
+            catalogItems
+                .OrderBy(
+                    item =>
+                        item.Metadata?.DateTaken ??
+                        item.FileCreatedDate)
+                .ThenBy(item => item.FileName)
+                .Select(CreateLibraryCardItem)
+                .ToList();
+
+        LibraryItemsControl.ItemsSource =
+            _libraryCards; 
+
+        int photoCount =
+            catalogItems.Count(
+                item => item.Kind == MediaKind.Photo);
+
+        int videoCount =
+            catalogItems.Count(
+                item => item.Kind == MediaKind.Video);
+
+        LibraryCountText.Text =
+            $"{_libraryCards.Count} item(s) — " +
+            $"{photoCount} photo(s), " +
+            $"{videoCount} video(s)";
+    }
+
+    private void RefreshLibrary()
+    {
+        if (!IsLoaded ||
+        SearchTextBox is null ||
+        MediaFilterComboBox is null ||
+        SortComboBox is null ||
+        LibraryItemsControl is null ||
+        LibraryCountText is null)
+        {
+            return;
+        }
+
+        IEnumerable<LibraryCardItem> query =
+            _libraryCards;
+
+        string search =
+            SearchTextBox.Text.Trim();
+
+        if (!string.IsNullOrWhiteSpace(search))
+        {
+            query =
+                query.Where(
+                    x =>
+                        x.FileName.Contains(
+                            search,
+                            StringComparison.OrdinalIgnoreCase));
+        }
+
+        string filter =
+            ((ComboBoxItem)
+                MediaFilterComboBox.SelectedItem)
+            ?.Content
+            ?.ToString() ?? "All";
+
+        switch (filter)
+        {
+            case "Photos":
+
+                query =
+                    query.Where(x => x.IsPhoto);
+
+                break;
+
+            case "Videos":
+
+                query =
+                    query.Where(x => x.IsVideo);
+
+                break;
+        }
+
+        string sort =
+            ((ComboBoxItem)
+                SortComboBox.SelectedItem)
+            ?.Content
+            ?.ToString() ?? "";
+
+        query = sort switch
+        {
+            "File Name" =>
+                query.OrderBy(item => item.FileName),
+
+            "File Size" =>
+                query.OrderBy(item => item.FileSize),
+
+            _ =>
+                query.OrderByDescending(item => item.DateTaken)
+        };
+
+        List<LibraryCardItem> visibleItems =
+        query.ToList();
+
+        LibraryItemsControl.ItemsSource =
+            visibleItems;
+
+        LibraryCountText.Text =
+            $"{visibleItems.Count} item(s)";
+
+        LibraryItemsControl.SelectedItem = null;
+        ClearSelectedItemDetails();
+
+    }
+
+    private void LoadSelectedThumbnail(
+    string? thumbnailPath)
+    {
+        SelectedThumbnailImage.Source = null;
+        SelectedThumbnailPlaceholder.Visibility =
+            Visibility.Visible;
+
+        if (string.IsNullOrWhiteSpace(thumbnailPath) ||
+            !File.Exists(thumbnailPath))
+        {
+            return;
+        }
+
+        try
+        {
+            var bitmap = new BitmapImage();
+
+            bitmap.BeginInit();
+            bitmap.CacheOption =
+                BitmapCacheOption.OnLoad;
+
+            bitmap.UriSource =
+                new System.Uri(
+                    thumbnailPath,
+                    System.UriKind.Absolute);
+
+            bitmap.EndInit();
+            bitmap.Freeze();
+
+            SelectedThumbnailImage.Source =
+                bitmap;
+
+            SelectedThumbnailPlaceholder.Visibility =
+                Visibility.Collapsed;
+        }
+        catch
+        {
+            SelectedThumbnailImage.Source = null;
+
+            SelectedThumbnailPlaceholder.Visibility =
+                Visibility.Visible;
+        }
+    }
+
+    private void ClearSelectedItemDetails()
+    {
+        if (NoSelectionPanel is null ||
+            SelectedItemDetailsPanel is null)
+        {
+            return;
+        }
+
+        NoSelectionPanel.Visibility =
+            Visibility.Visible;
+
+        SelectedItemDetailsPanel.Visibility =
+            Visibility.Collapsed;
+
+        SelectedThumbnailImage.Source = null;
+
+        SelectedFileNameText.Text =
+            string.Empty;
+
+        SelectedFilePathText.Text =
+            string.Empty;
+
+        SelectedMediaTypeText.Text =
+            string.Empty;
+
+        SelectedDateTakenText.Text =
+            string.Empty;
+
+        SelectedCameraText.Text =
+            string.Empty;
+
+        SelectedResolutionText.Text =
+            string.Empty;
+
+        SelectedFileSizeText.Text =
+            string.Empty;
+
+        SelectedLocationText.Text =
+            string.Empty;
+
+        SelectedStatusText.Text =
+            string.Empty;
+
+        SelectedMediaIdText.Text =
+            string.Empty;
+    }
+
+    private void SearchTextBox_TextChanged(
+    object sender,
+    TextChangedEventArgs e)
+    {
+        if (IsLoaded)
+        {
+            RefreshLibrary();
+        }
+    }
+
+    private void MediaFilterComboBox_SelectionChanged(
+    object sender,
+    SelectionChangedEventArgs e)
+    {
+        if (IsLoaded)
+        {
+            RefreshLibrary();
+        }
+    }
+
+    private void SortComboBox_SelectionChanged(
+        object sender,
+        SelectionChangedEventArgs e)
+    {
+        if (IsLoaded)
+        {
+            RefreshLibrary();
+        }
+    }
+
+
+    private static LibraryCardItem CreateLibraryCardItem(
+    MediaItem item)
+    {
+        MediaMetadataInfo? metadata =
+            item.Metadata;
+
+        string camera =
+            string.Join(
+                " ",
+                new[]
+                {
+                metadata?.CameraMake,
+                metadata?.CameraModel
+                }
+                .Where(
+                    value =>
+                        !string.IsNullOrWhiteSpace(value)));
+
+        if (string.IsNullOrWhiteSpace(camera))
+        {
+            camera = "Unknown";
+        }
+
+        string resolution =
+            metadata?.Width is int width &&
+            metadata?.Height is int height
+                ? $"{width} × {height}"
+                : "Unknown";
+
+        bool hasLocation =
+            metadata?.HasGps == true;
+
+        string location =
+            hasLocation &&
+            metadata?.Latitude is double latitude &&
+            metadata?.Longitude is double longitude
+                ? $"{latitude:F5}, {longitude:F5}"
+                : "Location unavailable";
+
+        DateTime displayDate =
+            metadata?.DateTaken ??
+            item.FileCreatedDate;
+
+        return new LibraryCardItem
+        {
+            MediaItemId = item.Id,
+            FileName = item.FileName,
+            FilePath = item.FilePath,
+            MediaType = item.Kind.ToString(),
+            ThumbnailPath = item.ThumbnailPath,
+            DateTaken = displayDate.ToString("yyyy-MM-dd HH:mm"),
+            Camera = camera,
+            Resolution = resolution,
+            FileSize = FormatFileSize(item.FileSizeBytes),
+            Location = location,
+            HasLocation = hasLocation,
+            ProcessingStatus =
+                item.ProcessingStatus.ToString()
+        };
+    }
+
+    private static string FormatFileSize(
+    long fileSizeBytes)
+    {
+        const double kiloByte = 1024;
+        const double megaByte = kiloByte * 1024;
+        const double gigaByte = megaByte * 1024;
+
+        return fileSizeBytes switch
+        {
+            >= (long)gigaByte =>
+                $"{fileSizeBytes / gigaByte:F2} GB",
+
+            >= (long)megaByte =>
+                $"{fileSizeBytes / megaByte:F2} MB",
+
+            >= (long)kiloByte =>
+                $"{fileSizeBytes / kiloByte:F1} KB",
+
+            _ =>
+                $"{fileSizeBytes} bytes"
+        };
+    }
 
     private async Task GenerateCatalogThumbnailsAsync(
     CancellationToken cancellationToken)
@@ -513,8 +899,15 @@ public partial class MainWindow : Window
         CurrentFileText.Text = "No scan running";
         ScanProgressBar.Value = 0;
         ScanProgressBar.IsIndeterminate = false;
+
         MetadataPreviewGrid.ItemsSource = null;
         MetadataPreviewCountText.Text = "No metadata loaded";
+
+        LibraryItemsControl.ItemsSource = null;
+        LibraryCountText.Text = "No media loaded";
+
+        LibraryItemsControl.SelectedItem = null;
+        ClearSelectedItemDetails();
     }
 
     private static bool ContainsSupportedMedia(
