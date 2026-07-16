@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using PhotoPilot.App.Models;
+using System.Windows.Controls;
 
 namespace PhotoPilot.App.Views;
 
@@ -47,6 +48,267 @@ public partial class DuplicateReviewWindow : Window
         }
 
         DisplayCurrentGroup();
+    }
+
+    private void KeepItemButton_Click(
+    object sender,
+    RoutedEventArgs e)
+    {
+        if (!TryGetReviewItem(
+                sender,
+                out DuplicateReviewItem? selectedItem))
+        {
+            return;
+        }
+
+        DuplicateReviewGroup? currentGroup =
+            _reviewSession.CurrentGroup;
+
+        if (currentGroup is null)
+        {
+            return;
+        }
+
+        foreach (DuplicateReviewItem item in currentGroup.Items)
+        {
+            bool isSelectedItem =
+                item.MediaItemId ==
+                selectedItem.MediaItemId;
+
+            item.IsSelectedToKeep =
+                isSelectedItem;
+
+            item.IsSelectedToDelete =
+                !isSelectedItem &&
+                !item.IsIgnored;
+
+            if (isSelectedItem)
+            {
+                item.IsIgnored = false;
+            }
+        }
+
+        RefreshCurrentGroupDisplay();
+    }
+
+    private void QuarantineItemButton_Click(
+    object sender,
+    RoutedEventArgs e)
+    {
+        if (!TryGetReviewItem(
+                sender,
+                out DuplicateReviewItem? selectedItem))
+        {
+            return;
+        }
+
+        DuplicateReviewGroup? currentGroup =
+            _reviewSession.CurrentGroup;
+
+        if (currentGroup is null)
+        {
+            return;
+        }
+
+        selectedItem.IsSelectedToKeep = false;
+        selectedItem.IsSelectedToDelete = true;
+        selectedItem.IsIgnored = false;
+
+        EnsureSelectedKeep(currentGroup);
+
+        RefreshCurrentGroupDisplay();
+    }
+
+    private void IgnoreItemButton_Click(
+    object sender,
+    RoutedEventArgs e)
+    {
+        if (!TryGetReviewItem(
+                sender,
+                out DuplicateReviewItem? selectedItem))
+        {
+            return;
+        }
+
+        DuplicateReviewGroup? currentGroup =
+            _reviewSession.CurrentGroup;
+
+        if (currentGroup is null)
+        {
+            return;
+        }
+
+        selectedItem.IsSelectedToKeep = false;
+        selectedItem.IsSelectedToDelete = false;
+        selectedItem.IsIgnored = true;
+
+        EnsureSelectedKeep(currentGroup);
+
+        RefreshCurrentGroupDisplay();
+    }
+
+    private static bool TryGetReviewItem(
+    object sender,
+    out DuplicateReviewItem? reviewItem)
+    {
+        reviewItem = null;
+
+        if (sender is not Button button ||
+            button.Tag is not DuplicateReviewItem item)
+        {
+            return false;
+        }
+
+        reviewItem = item;
+        return true;
+    }
+
+    private static void EnsureSelectedKeep(
+    DuplicateReviewGroup group)
+    {
+        bool hasSelectedKeep =
+            group.Items.Any(
+                item =>
+                    item.IsSelectedToKeep &&
+                    !item.IsIgnored &&
+                    !item.IsSelectedToDelete);
+
+        if (hasSelectedKeep)
+        {
+            return;
+        }
+
+        DuplicateReviewItem? replacement =
+            group.Items
+                .Where(
+                    item =>
+                        !item.IsIgnored &&
+                        !item.IsSelectedToDelete)
+                .OrderByDescending(
+                    item =>
+                        item.IsRecommendedKeep)
+                .ThenBy(
+                    item =>
+                        item.CreatedDate)
+                .FirstOrDefault();
+
+        if (replacement is null)
+        {
+            replacement =
+                group.Items
+                    .Where(item => !item.IsIgnored)
+                    .OrderByDescending(
+                        item =>
+                            item.IsRecommendedKeep)
+                    .ThenBy(
+                        item =>
+                            item.CreatedDate)
+                    .FirstOrDefault();
+        }
+
+        if (replacement is null)
+        {
+            return;
+        }
+
+        replacement.IsSelectedToKeep = true;
+        replacement.IsSelectedToDelete = false;
+    }
+
+    private void RefreshCurrentGroupDisplay()
+    {
+        DuplicateReviewGroup? currentGroup =
+            _reviewSession.CurrentGroup;
+
+        if (currentGroup is null)
+        {
+            ShowEmptyState();
+            return;
+        }
+
+        DuplicateItemsControl.ItemsSource = null;
+        DuplicateItemsControl.ItemsSource =
+            currentGroup.Items;
+
+        UpdateReviewStatus(currentGroup);
+        UpdateReviewSummary();
+    }
+
+    private void UpdateReviewSummary()
+    {
+        ReviewSummary summary =
+            ReviewSummary.FromSession(
+                _reviewSession);
+
+        SummaryGroupCountText.Text =
+            summary.DuplicateGroups.ToString();
+
+        SummaryKeepCountText.Text =
+            summary.FilesToKeep.ToString();
+
+        SummaryQuarantineCountText.Text =
+            summary.FilesToQuarantine.ToString();
+
+        SummaryIgnoredCountText.Text =
+            summary.IgnoredFiles.ToString();
+
+        SummaryRecoverableText.Text =
+            FormatFileSize(
+                CalculateSelectedRecoverableBytes());
+
+        ReviewCompletionText.Text =
+            $"{summary.ReviewedGroups} of " +
+            $"{summary.TotalGroups} groups reviewed";
+
+        ReviewProgressBar.Value =
+            summary.ReviewPercentage;
+
+        if (summary.ReadyForCleanup)
+        {
+            CleanupReadinessText.Text =
+                "Ready for cleanup planning. No files will be moved until you confirm.";
+
+            CleanupReadinessText.Foreground =
+                System.Windows.Media.Brushes.ForestGreen;
+        }
+        else
+        {
+            CleanupReadinessText.Text =
+                "Review all groups and keep at least one file in each group.";
+
+            CleanupReadinessText.Foreground =
+                System.Windows.Media.Brushes.DarkOrange;
+        }
+    }
+
+    private long CalculateSelectedRecoverableBytes()
+    {
+        return _reviewSession.Groups
+            .SelectMany(group => group.Items)
+            .Where(item => item.IsSelectedToDelete)
+            .Sum(item => item.FileSizeBytes);
+    }
+
+
+    private void UpdateReviewStatus(
+    DuplicateReviewGroup currentGroup)
+    {
+        int keepCount =
+            currentGroup.Items.Count(
+                item => item.IsSelectedToKeep);
+
+        int quarantineCount =
+            currentGroup.Items.Count(
+                item => item.IsSelectedToDelete);
+
+        int ignoredCount =
+            currentGroup.Items.Count(
+                item => item.IsIgnored);
+
+        FooterStatusText.Text =
+            $"Keep: {keepCount}   " +
+            $"Quarantine: {quarantineCount}   " +
+            $"Ignored: {ignoredCount}";
     }
 
     private void PreviousGroupButton_Click(
@@ -120,9 +382,7 @@ public partial class DuplicateReviewWindow : Window
             $"{FormatFileSize(
                 currentGroup.RecoverableBytes)} recoverable";
 
-        FooterStatusText.Text =
-            $"Reviewing duplicate group " +
-            $"{displayGroupNumber}";
+        UpdateReviewStatus(currentGroup);
 
         PreviousGroupButton.IsEnabled =
             _reviewSession.CurrentGroupIndex > 0;
@@ -130,6 +390,8 @@ public partial class DuplicateReviewWindow : Window
         NextGroupButton.IsEnabled =
             _reviewSession.CurrentGroupIndex <
             _reviewSession.Groups.Count - 1;
+
+        UpdateReviewSummary();
     }
 
     private void ShowEmptyState()
@@ -153,6 +415,21 @@ public partial class DuplicateReviewWindow : Window
 
         PreviousGroupButton.IsEnabled = false;
         NextGroupButton.IsEnabled = false;
+
+        SummaryGroupCountText.Text = "0";
+        SummaryKeepCountText.Text = "0";
+        SummaryQuarantineCountText.Text = "0";
+        SummaryIgnoredCountText.Text = "0";
+        SummaryRecoverableText.Text = "0 bytes";
+
+        ReviewCompletionText.Text =
+            "0 of 0 groups reviewed";
+
+        ReviewProgressBar.Value = 0;
+
+        CleanupReadinessText.Text =
+            "No duplicate groups are available.";
+
     }
 
     private static string FormatFileSize(

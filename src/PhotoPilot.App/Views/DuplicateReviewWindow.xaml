@@ -95,7 +95,9 @@
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="*"/>
+                            <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
+                        
 
                         <!-- Current group summary -->
                         <Border Grid.Row="0"
@@ -285,6 +287,98 @@
                                                                             StringFormat=Size: {0:N0} bytes}"
                                                                FontSize="11"
                                                                Foreground="{StaticResource TextSecondaryBrush}"/>
+                                                    <!-- Current review decision -->
+                                                    <Border Margin="0,12,0,0"
+        Padding="8,5"
+        CornerRadius="6">
+
+                                                        <Border.Style>
+                                                            <Style TargetType="Border">
+                                                                <Setter Property="Background"
+                    Value="#F1F5F9"/>
+
+                                                                <Style.Triggers>
+                                                                    <DataTrigger Binding="{Binding IsSelectedToKeep}"
+                             Value="True">
+                                                                        <Setter Property="Background"
+                            Value="#DCFCE7"/>
+                                                                    </DataTrigger>
+
+                                                                    <DataTrigger Binding="{Binding IsSelectedToDelete}"
+                             Value="True">
+                                                                        <Setter Property="Background"
+                            Value="#FEE2E2"/>
+                                                                    </DataTrigger>
+
+                                                                    <DataTrigger Binding="{Binding IsIgnored}"
+                             Value="True">
+                                                                        <Setter Property="Background"
+                            Value="#FEF3C7"/>
+                                                                    </DataTrigger>
+                                                                </Style.Triggers>
+                                                            </Style>
+                                                        </Border.Style>
+
+                                                        <TextBlock HorizontalAlignment="Center"
+               FontSize="11"
+               FontWeight="SemiBold">
+
+                                                            <TextBlock.Style>
+                                                                <Style TargetType="TextBlock">
+                                                                    <Setter Property="Text"
+                        Value="Not reviewed"/>
+
+                                                                    <Style.Triggers>
+                                                                        <DataTrigger Binding="{Binding IsSelectedToKeep}"
+                                 Value="True">
+                                                                            <Setter Property="Text"
+                                Value="KEEP"/>
+                                                                            <Setter Property="Foreground"
+                                Value="#166534"/>
+                                                                        </DataTrigger>
+
+                                                                        <DataTrigger Binding="{Binding IsSelectedToDelete}"
+                                 Value="True">
+                                                                            <Setter Property="Text"
+                                Value="QUARANTINE CANDIDATE"/>
+                                                                            <Setter Property="Foreground"
+                                Value="#991B1B"/>
+                                                                        </DataTrigger>
+
+                                                                        <DataTrigger Binding="{Binding IsIgnored}"
+                                 Value="True">
+                                                                            <Setter Property="Text"
+                                Value="IGNORED"/>
+                                                                            <Setter Property="Foreground"
+                                Value="#92400E"/>
+                                                                        </DataTrigger>
+                                                                    </Style.Triggers>
+                                                                </Style>
+                                                            </TextBlock.Style>
+                                                        </TextBlock>
+                                                    </Border>
+
+                                                    <!-- Review actions -->
+                                                    <StackPanel Margin="0,10,0,0">
+
+                                                        <Button Height="32"
+            Content="Keep This Copy"
+            Tag="{Binding}"
+            Click="KeepItemButton_Click"/>
+
+                                                        <Button Height="32"
+            Margin="0,7,0,0"
+            Content="Mark for Quarantine"
+            Tag="{Binding}"
+            Click="QuarantineItemButton_Click"/>
+
+                                                        <Button Height="32"
+            Margin="0,7,0,0"
+            Content="Ignore This File"
+            Tag="{Binding}"
+            Click="IgnoreItemButton_Click"/>
+                                                    </StackPanel>
+                                                    
                                                 </StackPanel>
                                             </Grid>
                                         </Border>
@@ -292,6 +386,140 @@
                                 </ItemsControl.ItemTemplate>
                             </ItemsControl>
                         </ScrollViewer>
+
+                        <!-- Review summary -->
+                        <Border Grid.Row="2"
+        Margin="0,18,0,0"
+        Padding="16"
+        Background="#F8FAFC"
+        BorderBrush="{StaticResource AppBorderBrush}"
+        BorderThickness="1"
+        CornerRadius="8">
+
+                            <StackPanel>
+                                <DockPanel Margin="0,0,0,12">
+                                    <TextBlock DockPanel.Dock="Left"
+                       Text="Review Summary"
+                       FontSize="16"
+                       FontWeight="SemiBold"/>
+
+                                    <TextBlock x:Name="ReviewCompletionText"
+                       Text="0 of 0 groups reviewed"
+                       HorizontalAlignment="Right"
+                       VerticalAlignment="Center"
+                       FontSize="12"
+                       Foreground="{StaticResource TextSecondaryBrush}"/>
+                                </DockPanel>
+
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <Border Grid.Column="0"
+                    Margin="0,0,6,0"
+                    Padding="10"
+                    Background="{StaticResource CardBackgroundBrush}"
+                    CornerRadius="7">
+                                        <StackPanel>
+                                            <TextBlock Text="Groups"
+                               FontSize="11"
+                               Foreground="{StaticResource TextSecondaryBrush}"/>
+                                            <TextBlock x:Name="SummaryGroupCountText"
+                               Text="0"
+                               FontSize="20"
+                               FontWeight="SemiBold"/>
+                                        </StackPanel>
+                                    </Border>
+
+                                    <Border Grid.Column="1"
+                    Margin="6,0"
+                    Padding="10"
+                    Background="#DCFCE7"
+                    CornerRadius="7">
+                                        <StackPanel>
+                                            <TextBlock Text="Keep"
+                               FontSize="11"
+                               Foreground="#166534"/>
+                                            <TextBlock x:Name="SummaryKeepCountText"
+                               Text="0"
+                               FontSize="20"
+                               FontWeight="SemiBold"
+                               Foreground="#166534"/>
+                                        </StackPanel>
+                                    </Border>
+
+                                    <Border Grid.Column="2"
+                    Margin="6,0"
+                    Padding="10"
+                    Background="#FEE2E2"
+                    CornerRadius="7">
+                                        <StackPanel>
+                                            <TextBlock Text="Quarantine"
+                               FontSize="11"
+                               Foreground="#991B1B"/>
+                                            <TextBlock x:Name="SummaryQuarantineCountText"
+                               Text="0"
+                               FontSize="20"
+                               FontWeight="SemiBold"
+                               Foreground="#991B1B"/>
+                                        </StackPanel>
+                                    </Border>
+
+                                    <Border Grid.Column="3"
+                    Margin="6,0"
+                    Padding="10"
+                    Background="#FEF3C7"
+                    CornerRadius="7">
+                                        <StackPanel>
+                                            <TextBlock Text="Ignored"
+                               FontSize="11"
+                               Foreground="#92400E"/>
+                                            <TextBlock x:Name="SummaryIgnoredCountText"
+                               Text="0"
+                               FontSize="20"
+                               FontWeight="SemiBold"
+                               Foreground="#92400E"/>
+                                        </StackPanel>
+                                    </Border>
+
+                                    <Border Grid.Column="4"
+                    Margin="6,0,0,0"
+                    Padding="10"
+                    Background="{StaticResource CardBackgroundBrush}"
+                    CornerRadius="7">
+                                        <StackPanel>
+                                            <TextBlock Text="Recoverable"
+                               FontSize="11"
+                               Foreground="{StaticResource TextSecondaryBrush}"/>
+                                            <TextBlock x:Name="SummaryRecoverableText"
+                               Text="0 bytes"
+                               FontSize="20"
+                               FontWeight="SemiBold"/>
+                                        </StackPanel>
+                                    </Border>
+                                </Grid>
+
+                                <ProgressBar x:Name="ReviewProgressBar"
+                     Margin="0,14,0,0"
+                     Height="10"
+                     Minimum="0"
+                     Maximum="100"
+                     Value="0"/>
+
+                                <TextBlock x:Name="CleanupReadinessText"
+                   Margin="0,10,0,0"
+                   Text="Review duplicate groups before cleanup."
+                   FontSize="12"
+                   FontWeight="SemiBold"
+                   Foreground="{StaticResource TextSecondaryBrush}"/>
+                            </StackPanel>
+                        </Border>
+                        
                     </Grid>
                 </Grid>
             </Border>
