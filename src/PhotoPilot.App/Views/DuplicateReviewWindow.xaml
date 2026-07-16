@@ -536,6 +536,7 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
@@ -553,9 +554,16 @@
                            VerticalAlignment="Center"
                            Text="No duplicate group selected"
                            Foreground="{StaticResource TextSecondaryBrush}"/>
-
+                <Button x:Name="ReviewCleanupPlanButton"
+        Grid.Column="2"
+        Width="170"
+        Height="38"
+        Margin="18,0"
+        Content="Review Cleanup Plan"
+        IsEnabled="False"
+        Click="ReviewCleanupPlanButton_Click"/>
                 <Button x:Name="NextGroupButton"
-                        Grid.Column="2"
+                        Grid.Column="3"
                         Width="140"
                         Height="38"
                         HorizontalAlignment="Right"

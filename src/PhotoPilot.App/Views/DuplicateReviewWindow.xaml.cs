@@ -91,6 +91,52 @@ public partial class DuplicateReviewWindow : Window
         RefreshCurrentGroupDisplay();
     }
 
+    private void ReviewCleanupPlanButton_Click(
+    object sender,
+    RoutedEventArgs e)
+    {
+        ReviewSummary summary =
+            ReviewSummary.FromSession(
+                _reviewSession);
+
+        if (!summary.ReadyForCleanup)
+        {
+            MessageBox.Show(
+                this,
+                "Review every duplicate group and select one file to keep before creating the cleanup plan.",
+                "Review Incomplete",
+                MessageBoxButton.OK,
+                MessageBoxImage.Warning);
+
+            return;
+        }
+
+        CleanupPlan cleanupPlan =
+            CleanupPlan.FromSession(
+                _reviewSession);
+
+        if (cleanupPlan.IsEmpty)
+        {
+            MessageBox.Show(
+                this,
+                "No files are currently selected for quarantine.",
+                "Cleanup Plan Empty",
+                MessageBoxButton.OK,
+                MessageBoxImage.Information);
+
+            return;
+        }
+
+        var cleanupPlanWindow =
+            new CleanupPlanWindow(
+                cleanupPlan)
+            {
+                Owner = this
+            };
+
+        cleanupPlanWindow.ShowDialog();
+    }
+
     private void QuarantineItemButton_Click(
     object sender,
     RoutedEventArgs e)
@@ -279,6 +325,10 @@ public partial class DuplicateReviewWindow : Window
             CleanupReadinessText.Foreground =
                 System.Windows.Media.Brushes.DarkOrange;
         }
+
+        ReviewCleanupPlanButton.IsEnabled =
+    summary.ReadyForCleanup &&
+    summary.FilesToQuarantine > 0;
     }
 
     private long CalculateSelectedRecoverableBytes()
@@ -430,6 +480,7 @@ public partial class DuplicateReviewWindow : Window
         CleanupReadinessText.Text =
             "No duplicate groups are available.";
 
+        ReviewCleanupPlanButton.IsEnabled = false;
     }
 
     private static string FormatFileSize(

@@ -1,0 +1,177 @@
+﻿<Window x:Class="PhotoPilot.App.Views.CleanupPlanWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="PhotoPilot - Cleanup Plan"
+        Width="1050"
+        Height="720"
+        MinWidth="800"
+        MinHeight="560"
+        WindowStartupLocation="CenterOwner">
+
+    <Grid Background="{StaticResource BackgroundBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="82"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="64"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <Border Grid.Row="0"
+                Padding="28,0"
+                Background="{StaticResource CardBackgroundBrush}"
+                BorderBrush="{StaticResource AppBorderBrush}"
+                BorderThickness="0,0,0,1">
+
+            <DockPanel VerticalAlignment="Center">
+                <StackPanel DockPanel.Dock="Left">
+                    <TextBlock Text="Cleanup Plan"
+                               FontSize="26"
+                               FontWeight="Bold"
+                               Foreground="{StaticResource PrimaryBrush}"/>
+
+                    <TextBlock Margin="0,4,0,0"
+                               Text="Review every file before beginning quarantine."
+                               FontSize="13"
+                               Foreground="{StaticResource TextSecondaryBrush}"/>
+                </StackPanel>
+
+                <StackPanel HorizontalAlignment="Right"
+                            VerticalAlignment="Center">
+
+                    <TextBlock x:Name="PlanFileCountText"
+                               Text="0 files selected"
+                               FontSize="15"
+                               FontWeight="SemiBold"
+                               HorizontalAlignment="Right"/>
+
+                    <TextBlock x:Name="PlanRecoverableText"
+                               Margin="0,4,0,0"
+                               Text="0 bytes recoverable"
+                               FontSize="12"
+                               Foreground="{StaticResource TextSecondaryBrush}"
+                               HorizontalAlignment="Right"/>
+                </StackPanel>
+            </DockPanel>
+        </Border>
+
+        <!-- Main content -->
+        <Grid Grid.Row="1"
+              Margin="28">
+
+            <Border Padding="18"
+                    Background="{StaticResource CardBackgroundBrush}"
+                    BorderBrush="{StaticResource AppBorderBrush}"
+                    BorderThickness="1"
+                    CornerRadius="12">
+
+                <Grid>
+                    <!-- Empty plan -->
+                    <StackPanel x:Name="EmptyPlanPanel"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center">
+
+                        <TextBlock Text="✓"
+                                   FontSize="52"
+                                   Foreground="{StaticResource PrimaryBrush}"
+                                   HorizontalAlignment="Center"/>
+
+                        <TextBlock Margin="0,14,0,0"
+                                   Text="No files selected for quarantine"
+                                   FontSize="21"
+                                   FontWeight="SemiBold"
+                                   HorizontalAlignment="Center"/>
+
+                        <TextBlock Margin="0,8,0,0"
+                                   Text="Return to duplicate review and mark files for quarantine."
+                                   FontSize="13"
+                                   Foreground="{StaticResource TextSecondaryBrush}"
+                                   HorizontalAlignment="Center"/>
+                    </StackPanel>
+
+                    <!-- Cleanup plan -->
+                    <Grid x:Name="PlanContentPanel"
+                          Visibility="Collapsed">
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <Border Grid.Row="0"
+                                Margin="0,0,0,14"
+                                Padding="14"
+                                Background="#FEF3C7"
+                                BorderBrush="#F59E0B"
+                                BorderThickness="1"
+                                CornerRadius="8">
+
+                            <TextBlock Text="No files will be deleted. The next sprint will move approved files into PhotoPilot Quarantine, where they can be restored."
+                                       TextWrapping="Wrap"
+                                       FontSize="13"
+                                       Foreground="#92400E"/>
+                        </Border>
+
+                        <DataGrid x:Name="CleanupPlanGrid"
+                                  Grid.Row="1"
+                                  AutoGenerateColumns="False"
+                                  IsReadOnly="True"
+                                  CanUserAddRows="False"
+                                  CanUserDeleteRows="False"
+                                  SelectionMode="Single"
+                                  HeadersVisibility="Column"
+                                  GridLinesVisibility="Horizontal">
+
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="File"
+                                                    Binding="{Binding FileName}"
+                                                    Width="2*"/>
+
+                                <DataGridTextColumn Header="Path"
+                                                    Binding="{Binding FilePath}"
+                                                    Width="3*"/>
+
+                                <DataGridTextColumn Header="Size"
+                                                    Binding="{Binding DisplayFileSize}"
+                                                    Width="110"/>
+
+                                <DataGridTextColumn Header="Group"
+                                                    Binding="{Binding DuplicateGroupId}"
+                                                    Width="220"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </Grid>
+                </Grid>
+            </Border>
+        </Grid>
+
+        <!-- Footer -->
+        <Border Grid.Row="2"
+                Padding="28,0"
+                Background="{StaticResource CardBackgroundBrush}"
+                BorderBrush="{StaticResource AppBorderBrush}"
+                BorderThickness="0,1,0,0">
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <Button Grid.Column="0"
+                        Width="150"
+                        Height="40"
+                        HorizontalAlignment="Left"
+                        Content="Back to Review"
+                        Click="BackToReviewButton_Click"/>
+
+                <Button x:Name="ProceedToQuarantineButton"
+                        Grid.Column="1"
+                        Width="190"
+                        Height="40"
+                        Content="Proceed to Quarantine"
+                        IsEnabled="False"
+                        Click="ProceedToQuarantineButton_Click"/>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>
