@@ -1,11 +1,30 @@
 {
   "version": 4,
   "targets": {
-    "net10.0": {}
+    "net10.0": {
+      "PhotoPilot.Core/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v10.0",
+        "compile": {
+          "bin/placeholder/PhotoPilot.Core.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/PhotoPilot.Core.dll": {}
+        }
+      }
+    }
   },
-  "libraries": {},
+  "libraries": {
+    "PhotoPilot.Core/1.0.0": {
+      "type": "project",
+      "path": "../PhotoPilot.Core/PhotoPilot.Core.csproj",
+      "msbuildProject": "../PhotoPilot.Core/PhotoPilot.Core.csproj"
+    }
+  },
   "projectFileDependencyGroups": {
-    "net10.0": []
+    "net10.0": [
+      "PhotoPilot.Core >= 1.0.0"
+    ]
   },
   "packageFolders": {
     "C:\\Users\\rames\\.nuget\\packages\\": {},
@@ -40,7 +59,11 @@
         "net10.0": {
           "framework": "net10.0",
           "targetAlias": "net10.0",
-          "projectReferences": {}
+          "projectReferences": {
+            "C:\\Padma\\Projects\\AI Tools\\PhotoPilot\\PhotoPilot\\src\\PhotoPilot.Core\\PhotoPilot.Core.csproj": {
+              "projectPath": "C:\\Padma\\Projects\\AI Tools\\PhotoPilot\\PhotoPilot\\src\\PhotoPilot.Core\\PhotoPilot.Core.csproj"
+            }
+          }
         }
       },
       "warningProperties": {
@@ -75,7 +98,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.300/PortableRuntimeIdentifierGraph.json",
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.301/PortableRuntimeIdentifierGraph.json",
         "packagesToPrune": {
           "Microsoft.CSharp": "(,4.7.32767]",
           "Microsoft.VisualBasic": "(,10.4.32767]",

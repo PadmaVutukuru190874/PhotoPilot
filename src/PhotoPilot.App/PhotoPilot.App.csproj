@@ -10,6 +10,7 @@
 
 	<ItemGroup>
 	  <ProjectReference Include="..\PhotoPilot.Imaging\PhotoPilot.Imaging.csproj" />
+	  <ProjectReference Include="..\PhotoPilot.Infrastructure\PhotoPilot.Infrastructure.csproj" />
 	  <ProjectReference Include="..\PhotoPilot.Metadata\PhotoPilot.Metadata.csproj" />
 	  <ProjectReference Include="..\PhotoPilot.Scanner\PhotoPilot.Scanner.csproj" />
 	</ItemGroup>

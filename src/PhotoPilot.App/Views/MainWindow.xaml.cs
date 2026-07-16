@@ -15,11 +15,20 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
+using PhotoPilot.Infrastructure;
 
 namespace PhotoPilot.App.Views;
 
 public partial class MainWindow : Window
 {
+    private readonly IExactDuplicateDetector _exactDuplicateDetector;
+
+    private CancellationTokenSource?
+        _duplicateCancellationTokenSource;
+
+    private DuplicateDetectionResult?
+        _lastDuplicateDetectionResult;
+
     private List<LibraryCardItem> _libraryCards = new();
     private static readonly HashSet<string> SupportedMediaExtensions =
         new(StringComparer.OrdinalIgnoreCase)
@@ -61,10 +70,227 @@ public partial class MainWindow : Window
 
         _mediaCatalog = new MediaCatalog();
 
+        _exactDuplicateDetector =
+        new Sha256DuplicateDetector();
+
         _thumbnailCacheManager =
         new ThumbnailCacheManager(
         new FileSystemThumbnailGenerator());
     }
+
+    private async void FindDuplicates_Click(
+    object sender,
+    RoutedEventArgs e)
+    {
+        IReadOnlyList<MediaItem> catalogItems =
+            _mediaCatalog.Items;
+
+        if (catalogItems.Count < 2)
+        {
+            MessageBox.Show(
+                this,
+                "At least two media files are required before duplicate detection can run.",
+                "Not Enough Media",
+                MessageBoxButton.OK,
+                MessageBoxImage.Information);
+
+            return;
+        }
+
+        _duplicateCancellationTokenSource?.Cancel();
+        _duplicateCancellationTokenSource?.Dispose();
+
+        _duplicateCancellationTokenSource =
+            new CancellationTokenSource();
+
+        SetDuplicateDetectionState(true);
+        ResetDuplicateSummary();
+
+        ScanProgressBar.IsIndeterminate = false;
+        ScanProgressBar.Minimum = 0;
+        ScanProgressBar.Maximum = 100;
+        ScanProgressBar.Value = 0;
+
+        var progress =
+            new Progress<DuplicateDetectionProgress>(
+                UpdateDuplicateDetectionProgress);
+
+        try
+        {
+            StatusText.Text =
+                "Finding exact duplicate files...";
+
+            DuplicateStatusText.Text =
+                "Grouping files by size and calculating SHA-256 hashes.";
+
+            DuplicateDetectionResult result =
+                await _exactDuplicateDetector.DetectAsync(
+                    catalogItems,
+                    progress,
+                    _duplicateCancellationTokenSource.Token);
+
+            _lastDuplicateDetectionResult =
+                result;
+
+            DisplayDuplicateDetectionResult(result);
+        }
+        catch (OperationCanceledException)
+        {
+            StatusText.Text =
+                "Duplicate detection cancelled";
+
+            DuplicateStatusText.Text =
+                "Duplicate detection was cancelled by the user.";
+        }
+        catch (Exception ex)
+        {
+            StatusText.Text =
+                "Duplicate detection failed";
+
+            DuplicateStatusText.Text =
+                ex.Message;
+
+            MessageBox.Show(
+                this,
+                ex.Message,
+                "Duplicate Detection Error",
+                MessageBoxButton.OK,
+                MessageBoxImage.Error);
+        }
+        finally
+        {
+            ScanProgressBar.IsIndeterminate = false;
+
+            SetDuplicateDetectionState(false);
+        }
+    }
+
+    private void UpdateDuplicateDetectionProgress(
+    DuplicateDetectionProgress progress)
+    {
+        ScanProgressBar.IsIndeterminate = false;
+        ScanProgressBar.Value = progress.Percentage;
+
+        StatusText.Text =
+            $"Finding duplicates: " +
+            $"{progress.FilesProcessed} of " +
+            $"{progress.TotalFiles} candidate files";
+
+        CurrentFileText.Text =
+            progress.CurrentFile;
+
+        DuplicateFilesHashedText.Text =
+            progress.FilesHashed.ToString();
+
+        DuplicateStatusText.Text =
+            $"{progress.FilesSkipped} unique-size file(s) skipped; " +
+            $"{progress.FailedFiles} failure(s).";
+    }
+
+    private void DisplayDuplicateDetectionResult(
+    DuplicateDetectionResult result)
+    {
+        DuplicateGroupCountText.Text =
+            result.DuplicateGroupCount.ToString();
+
+        DuplicateFileCountText.Text =
+            result.DuplicateFileCount.ToString();
+
+        DuplicateFilesHashedText.Text =
+            result.FilesHashed.ToString();
+
+        RecoverableSpaceText.Text =
+            FormatFileSize(
+                result.TotalRecoverableBytes);
+
+        ScanProgressBar.Value = 100;
+
+        if (result.WasCancelled)
+        {
+            StatusText.Text =
+                "Duplicate detection cancelled";
+
+            DuplicateStatusText.Text =
+                "Partial duplicate results were not applied.";
+
+            return;
+        }
+
+        if (result.DuplicateGroupCount == 0)
+        {
+            StatusText.Text =
+                "No exact duplicates found";
+
+            DuplicateStatusText.Text =
+                $"Examined {result.FilesExamined} file(s) in " +
+                $"{result.Duration.TotalSeconds:F1} seconds.";
+
+            MessageBox.Show(
+                this,
+                "No exact duplicate files were found.",
+                "Duplicate Detection Complete",
+                MessageBoxButton.OK,
+                MessageBoxImage.Information);
+
+            return;
+        }
+
+        StatusText.Text =
+            $"{result.DuplicateGroupCount} exact duplicate group(s) found";
+
+        DuplicateStatusText.Text =
+            $"{result.DuplicateFileCount} duplicate file(s); " +
+            $"{FormatFileSize(result.TotalRecoverableBytes)} " +
+            $"potentially recoverable.";
+
+        MessageBox.Show(
+            this,
+            $"Exact duplicate detection completed.\n\n" +
+            $"Files examined: {result.FilesExamined}\n" +
+            $"Files hashed: {result.FilesHashed}\n" +
+            $"Duplicate groups: {result.DuplicateGroupCount}\n" +
+            $"Duplicate files: {result.DuplicateFileCount}\n" +
+            $"Potentially recoverable: " +
+            $"{FormatFileSize(result.TotalRecoverableBytes)}\n" +
+            $"Failed files: {result.FailedFiles}\n" +
+            $"Duration: {result.Duration.TotalSeconds:F1} seconds",
+            "Duplicates Found",
+            MessageBoxButton.OK,
+            MessageBoxImage.Information);
+    }
+
+    private void SetDuplicateDetectionState(
+    bool isRunning)
+    {
+        SelectFolderButton.IsEnabled =
+            !isRunning;
+
+        StartScanButton.IsEnabled =
+            !isRunning &&
+            !string.IsNullOrWhiteSpace(
+                _selectedFolderPath);
+
+        FindDuplicatesButton.IsEnabled =
+            !isRunning &&
+            _mediaCatalog.Count > 1;
+
+        CancelScanButton.IsEnabled =
+            isRunning;
+    }
+
+    private void ResetDuplicateSummary()
+    {
+        _lastDuplicateDetectionResult = null;
+
+        DuplicateGroupCountText.Text = "0";
+        DuplicateFileCountText.Text = "0";
+        DuplicateFilesHashedText.Text = "0";
+        RecoverableSpaceText.Text = "0 bytes";
+
+        DuplicateStatusText.Text =
+            "No duplicate-detection result available.";
+    }
+
 
     private void LibraryItemsControl_SelectionChanged(
     object sender,
@@ -245,6 +471,11 @@ public partial class MainWindow : Window
             PopulateMetadataPreview();
 
             PopulateLibraryCards();
+
+            FindDuplicatesButton.IsEnabled =
+            
+            _mediaCatalog.Count > 1;
+            
             RefreshLibrary();
 
             ScanProgressBar.IsIndeterminate = false;
@@ -282,6 +513,8 @@ public partial class MainWindow : Window
         StatusText.Text = "Cancelling scan...";
 
         _scanCancellationTokenSource?.Cancel();
+
+        _duplicateCancellationTokenSource?.Cancel();
     }
 
     private void UpdateScanProgress(
@@ -908,6 +1141,10 @@ public partial class MainWindow : Window
 
         LibraryItemsControl.SelectedItem = null;
         ClearSelectedItemDetails();
+
+        FindDuplicatesButton.IsEnabled = false;
+        ResetDuplicateSummary();
+
     }
 
     private static bool ContainsSupportedMedia(
@@ -986,6 +1223,9 @@ public partial class MainWindow : Window
     {
         _scanCancellationTokenSource?.Cancel();
         _scanCancellationTokenSource?.Dispose();
+
+        _duplicateCancellationTokenSource?.Cancel();
+        _duplicateCancellationTokenSource?.Dispose();
 
         base.OnClosed(e);
     }

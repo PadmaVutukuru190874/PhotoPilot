@@ -7,14 +7,30 @@
   "targets": {
     ".NETCoreApp,Version=v10.0": {
       "PhotoPilot.Infrastructure/1.0.0": {
+        "dependencies": {
+          "PhotoPilot.Core": "1.0.0"
+        },
         "runtime": {
           "PhotoPilot.Infrastructure.dll": {}
+        }
+      },
+      "PhotoPilot.Core/1.0.0": {
+        "runtime": {
+          "PhotoPilot.Core.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
         }
       }
     }
   },
   "libraries": {
     "PhotoPilot.Infrastructure/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "PhotoPilot.Core/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

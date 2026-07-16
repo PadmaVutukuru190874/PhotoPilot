@@ -9,6 +9,7 @@
       "PhotoPilot.App/1.0.0": {
         "dependencies": {
           "PhotoPilot.Imaging": "1.0.0",
+          "PhotoPilot.Infrastructure": "1.0.0",
           "PhotoPilot.Metadata": "1.0.0",
           "PhotoPilot.Scanner": "1.0.0"
         },
@@ -46,6 +47,17 @@
       "PhotoPilot.Imaging/1.0.0": {
         "runtime": {
           "PhotoPilot.Imaging.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "PhotoPilot.Infrastructure/1.0.0": {
+        "dependencies": {
+          "PhotoPilot.Core": "1.0.0"
+        },
+        "runtime": {
+          "PhotoPilot.Infrastructure.dll": {
             "assemblyVersion": "1.0.0.0",
             "fileVersion": "1.0.0.0"
           }
@@ -102,6 +114,11 @@
       "sha512": ""
     },
     "PhotoPilot.Imaging/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "PhotoPilot.Infrastructure/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

@@ -478,6 +478,14 @@
                                     Content="Cancel"
                                     IsEnabled="False"
                                     Click="CancelScan_Click"/>
+
+                            <Button x:Name="FindDuplicatesButton"
+                                    Width="160"
+                                    Height="46"
+                                    Margin="12,0,0,0"
+                                    Content="Find Duplicates"
+                                    IsEnabled="False"
+                                    Click="FindDuplicates_Click"/>
                         </StackPanel>
 
                         <!-- Selected folder -->
@@ -591,6 +599,109 @@
                                 </StackPanel>
                             </Border>
                         </Grid>
+
+                        <!-- Exact duplicate summary -->
+                        <Border Margin="0,22,0,0"
+        Padding="16"
+        BorderBrush="{StaticResource AppBorderBrush}"
+        BorderThickness="1"
+        CornerRadius="10"
+        Background="{StaticResource CardBackgroundBrush}">
+
+                            <StackPanel>
+                                <DockPanel Margin="0,0,0,14">
+                                    <StackPanel DockPanel.Dock="Left">
+                                        <TextBlock Text="Exact Duplicate Detection"
+                           FontSize="17"
+                           FontWeight="SemiBold"/>
+
+                                        <TextBlock x:Name="DuplicateStatusText"
+                           Margin="0,4,0,0"
+                           Text="Run a scan before searching for duplicates."
+                           FontSize="12"
+                           Foreground="{StaticResource TextSecondaryBrush}"/>
+                                    </StackPanel>
+                                </DockPanel>
+
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <Border Grid.Column="0"
+                    Margin="0,0,8,0"
+                    Padding="12"
+                    Background="#F8FAFC"
+                    CornerRadius="8">
+                                        <StackPanel>
+                                            <TextBlock Text="Groups"
+                               FontSize="12"
+                               Foreground="{StaticResource TextSecondaryBrush}"/>
+
+                                            <TextBlock x:Name="DuplicateGroupCountText"
+                               Text="0"
+                               FontSize="22"
+                               FontWeight="SemiBold"/>
+                                        </StackPanel>
+                                    </Border>
+
+                                    <Border Grid.Column="1"
+                    Margin="8,0"
+                    Padding="12"
+                    Background="#F8FAFC"
+                    CornerRadius="8">
+                                        <StackPanel>
+                                            <TextBlock Text="Duplicate files"
+                               FontSize="12"
+                               Foreground="{StaticResource TextSecondaryBrush}"/>
+
+                                            <TextBlock x:Name="DuplicateFileCountText"
+                               Text="0"
+                               FontSize="22"
+                               FontWeight="SemiBold"/>
+                                        </StackPanel>
+                                    </Border>
+
+                                    <Border Grid.Column="2"
+                    Margin="8,0"
+                    Padding="12"
+                    Background="#F8FAFC"
+                    CornerRadius="8">
+                                        <StackPanel>
+                                            <TextBlock Text="Files hashed"
+                               FontSize="12"
+                               Foreground="{StaticResource TextSecondaryBrush}"/>
+
+                                            <TextBlock x:Name="DuplicateFilesHashedText"
+                               Text="0"
+                               FontSize="22"
+                               FontWeight="SemiBold"/>
+                                        </StackPanel>
+                                    </Border>
+
+                                    <Border Grid.Column="3"
+                    Margin="8,0,0,0"
+                    Padding="12"
+                    Background="#F8FAFC"
+                    CornerRadius="8">
+                                        <StackPanel>
+                                            <TextBlock Text="Recoverable"
+                               FontSize="12"
+                               Foreground="{StaticResource TextSecondaryBrush}"/>
+
+                                            <TextBlock x:Name="RecoverableSpaceText"
+                               Text="0 bytes"
+                               FontSize="22"
+                               FontWeight="SemiBold"/>
+                                        </StackPanel>
+                                    </Border>
+                                </Grid>
+                            </StackPanel>
+                        </Border>
+                        
                         <!-- Metadata preview -->
                         <Border Margin="0,24,0,0"
         Padding="16"

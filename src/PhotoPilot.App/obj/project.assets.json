@@ -54,6 +54,19 @@
           "Microsoft.WindowsDesktop.App.WPF"
         ]
       },
+      "PhotoPilot.Infrastructure/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v10.0",
+        "dependencies": {
+          "PhotoPilot.Core": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/PhotoPilot.Infrastructure.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/PhotoPilot.Infrastructure.dll": {}
+        }
+      },
       "PhotoPilot.Metadata/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v10.0",
@@ -130,6 +143,11 @@
       "path": "../PhotoPilot.Imaging/PhotoPilot.Imaging.csproj",
       "msbuildProject": "../PhotoPilot.Imaging/PhotoPilot.Imaging.csproj"
     },
+    "PhotoPilot.Infrastructure/1.0.0": {
+      "type": "project",
+      "path": "../PhotoPilot.Infrastructure/PhotoPilot.Infrastructure.csproj",
+      "msbuildProject": "../PhotoPilot.Infrastructure/PhotoPilot.Infrastructure.csproj"
+    },
     "PhotoPilot.Metadata/1.0.0": {
       "type": "project",
       "path": "../PhotoPilot.Metadata/PhotoPilot.Metadata.csproj",
@@ -144,6 +162,7 @@
   "projectFileDependencyGroups": {
     "net10.0-windows": [
       "PhotoPilot.Imaging >= 1.0.0",
+      "PhotoPilot.Infrastructure >= 1.0.0",
       "PhotoPilot.Metadata >= 1.0.0",
       "PhotoPilot.Scanner >= 1.0.0"
     ]
@@ -184,6 +203,9 @@
           "projectReferences": {
             "C:\\Padma\\Projects\\AI Tools\\PhotoPilot\\PhotoPilot\\src\\PhotoPilot.Imaging\\PhotoPilot.Imaging.csproj": {
               "projectPath": "C:\\Padma\\Projects\\AI Tools\\PhotoPilot\\PhotoPilot\\src\\PhotoPilot.Imaging\\PhotoPilot.Imaging.csproj"
+            },
+            "C:\\Padma\\Projects\\AI Tools\\PhotoPilot\\PhotoPilot\\src\\PhotoPilot.Infrastructure\\PhotoPilot.Infrastructure.csproj": {
+              "projectPath": "C:\\Padma\\Projects\\AI Tools\\PhotoPilot\\PhotoPilot\\src\\PhotoPilot.Infrastructure\\PhotoPilot.Infrastructure.csproj"
             },
             "C:\\Padma\\Projects\\AI Tools\\PhotoPilot\\PhotoPilot\\src\\PhotoPilot.Metadata\\PhotoPilot.Metadata.csproj": {
               "projectPath": "C:\\Padma\\Projects\\AI Tools\\PhotoPilot\\PhotoPilot\\src\\PhotoPilot.Metadata\\PhotoPilot.Metadata.csproj"
